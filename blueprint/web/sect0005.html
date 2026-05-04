@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  MathJax = { 
+    tex: {
+		    inlineMath: [['$','$'], ['\\(','\\)']]
+	} }
+</script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<meta name="generator" content="plasTeX" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Consequences: Characters as Orthonormal Basis and Dimension Identity</title>
+<link rel="prev" href="sect0004.html" title="The Peter–Weyl Theorem for Finite Groups" />
+<link rel="up" href="index.html" title="Peter WWeyl Lean" />
+<link rel="stylesheet" href="styles/theme-white.css" />
+<link rel="stylesheet" href="styles/amsthm.css" />
+<link rel="stylesheet" href="styles/showmore.css" />
+<link rel="stylesheet" href="styles/blueprint.css" />
+<link rel="stylesheet" href="styles/extra_styles.css" />
+</head>
+
+<body>
+<header>
+<svg  id="toc-toggle" class="icon icon-list-numbered "><use xlink:href="symbol-defs.svg#icon-list-numbered"></use></svg>
+<h1 id="doc_title"><a href="index.html">Peter WWeyl Lean</a></h1>
+</header>
+
+<div class="wrapper">
+<nav class="toc">
+<ul class="sub-toc-0">
+<li class="">
+  <a href="sect0001.html"><span class="toc_ref">1</span> <span class="toc_entry">Finite Groups and Their Representations</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0001.html#a0000000007"><span class="toc_ref">1.1</span> <span class="toc_entry">Basic Algebraic Setup</span></a>
+ </li>
+<li class="">
+  <a href="sect0001.html#a0000000008"><span class="toc_ref">1.2</span> <span class="toc_entry">Weyl Averaging and Unitarisability</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class="">
+  <a href="sect0002.html"><span class="toc_ref">2</span> <span class="toc_entry">Schur’s Lemma and Its Consequences</span></a>
+ </li>
+<li class="">
+  <a href="sect0003.html"><span class="toc_ref">3</span> <span class="toc_entry">Characters and Orthogonality</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0003.html#a0000000012"><span class="toc_ref">3.1</span> <span class="toc_entry">Characters</span></a>
+ </li>
+<li class="">
+  <a href="sect0003.html#a0000000013"><span class="toc_ref">3.2</span> <span class="toc_entry">Orthogonality of Characters</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class="">
+  <a href="sect0004.html"><span class="toc_ref">4</span> <span class="toc_entry">The Peter–Weyl Theorem for Finite Groups</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0004.html#a0000000014"><span class="toc_ref">4.1</span> <span class="toc_entry">Isotypic Decomposition</span></a>
+ </li>
+<li class="">
+  <a href="sect0004.html#a0000000015"><span class="toc_ref">4.2</span> <span class="toc_entry">The Peter–Weyl / Isotypic Decomposition Theorem</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class=" active current">
+  <a href="sect0005.html"><span class="toc_ref">5</span> <span class="toc_entry">Consequences: Characters as Orthonormal Basis and Dimension Identity</span></a>
+  <span class="expand-toc">▼</span>
+  <ul class="sub-toc-1 active">
+     <li class="">
+  <a href="sect0005.html#a0000000016"><span class="toc_ref">5.1</span> <span class="toc_entry">Characters Form an Orthonormal Basis for Class Functions</span></a>
+ </li>
+<li class="">
+  <a href="sect0005.html#a0000000017"><span class="toc_ref">5.2</span> <span class="toc_entry">Multiplicity Formula</span></a>
+ </li>
+<li class="">
+  <a href="sect0005.html#a0000000018"><span class="toc_ref">5.3</span> <span class="toc_entry">Dimension Identity</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li ><a href="dep_graph_document.html">Dependency graph</a></li>
+</ul>
+</nav>
+
+<div class="content">
+<div class="content-wrapper">
+
+
+<div class="main-text">
+<h1 id="a0000000006">5 Consequences: Characters as Orthonormal Basis and Dimension Identity</h1>
+<h1 id="a0000000016">5.1 Characters Form an Orthonormal Basis for Class Functions</h1>
+<div class="definition_thmwrapper theorem-style-definition" id="def:class-fn">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">24</span>
+    <span class="definition_thmtitle">Class function</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="sect0005.html#def:class-fn">#</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="sect0001.html#def:finite-group">Definition 1</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="https://JonCYeh.github.io/peter-weyl-lean/docs/find/#doc/classFunctions" class="lean_decl">classFunctions</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="definition_thmcontent">
+  <p>    A <em>class function</em> on \(G\) is a function \(f \colon G \to k\) that is constant on conjugacy classes: \(f(hgh^{-1}) = f(g)\) for all \(g, h \in G\). The space of class functions is denoted \(\mathrm{Cl}(G) \subseteq k^G\). </p>
+
+  </div>
+</div>
+<div class="theorem_thmwrapper theorem-style-plain" id="thm:char-basis">
+  <div class="theorem_thmheading">
+    <span class="theorem_thmcaption">
+    Theorem
+    </span>
+    <span class="theorem_thmlabel">25</span>
+    <span class="theorem_thmtitle">Irreducible characters form an orthonormal basis for class functions</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="sect0005.html#thm:char-basis">#</a>
+    
+    <a class="icon proof" href="sect0005.html#a0000000038"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="sect0005.html#def:class-fn">Definition 24</a></li>
+          
+          <li><a href="sect0003.html#def:character">Definition 13</a></li>
+          
+          <li><a href="sect0003.html#thm:char-ortho">Theorem 15</a></li>
+          
+          <li><a href="sect0004.html#thm:peter-weyl-finite">Theorem 23</a></li>
+          
+          <li><a href="sect0003.html#thm:char-ortho">Theorem 15</a></li>
+          
+          <li><a href="sect0004.html#thm:peter-weyl-finite">Theorem 23</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="https://JonCYeh.github.io/peter-weyl-lean/docs/find/#doc/irreducibleCharacters_orthonormalBasis" class="lean_decl">irreducibleCharacters_orthonormalBasis</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="theorem_thmcontent">
+  <p>    The characters \(\{ \chi _\xi \} _{\xi \in \hat G}\) form an orthonormal basis for \(\mathrm{Cl}(G)\) with respect to the inner product \(\langle \cdot , \cdot \rangle _G\). In particular, \(|\hat G| = \dim _k \mathrm{Cl}(G) = \# \{ \text{conjugacy classes of } G\} \). </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000038">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▶</span>
+  </div>
+  <div class="proof_content">
+  <p> Orthonormality follows from Theorem&#160;<a href="sect0003.html#thm:char-ortho">15</a> (already in Mathlib). For spanning: if \(f \in \mathrm{Cl}(G)\) is orthogonal to all \(\chi _\xi \), then the projector \(\frac{d_\xi }{|G|}\sum _g f(g)\rho _\xi (g)\) vanishes for all \(\xi \). By the Fourier inversion formula (consequence of Theorem&#160;<a href="sect0004.html#thm:peter-weyl-finite">23</a>), \(f = 0\). </p>
+<p>The dimension count \(|\hat G| = \# \{ \text{conjugacy classes}\} \) follows since both sides equal \(\dim _k \mathrm{Cl}(G)\) (basis on one side, explicit basis of delta functions on conjugacy classes on the other). </p>
+
+  </div>
+</div>
+<h1 id="a0000000017">5.2 Multiplicity Formula</h1>
+<div class="corollary_thmwrapper theorem-style-plain" id="cor:multiplicity">
+  <div class="corollary_thmheading">
+    <span class="corollary_thmcaption">
+    Corollary
+    </span>
+    <span class="corollary_thmlabel">26</span>
+    <span class="corollary_thmtitle">Multiplicity formula</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="sect0005.html#cor:multiplicity">#</a>
+    
+    <a class="icon proof" href="sect0005.html#a0000000039"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="sect0005.html#thm:char-basis">Theorem 25</a></li>
+          
+          <li><a href="sect0003.html#cor:inner-prod-hom">Corollary 16</a></li>
+          
+          <li><a href="sect0003.html#cor:inner-prod-hom">Corollary 16</a></li>
+          
+          <li><a href="sect0003.html#thm:char-ortho">Theorem 15</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="https://JonCYeh.github.io/peter-weyl-lean/docs/find/#doc/multiplicityFormula" class="lean_decl">multiplicityFormula</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="corollary_thmcontent">
+  <p>    If \(V \cong \bigoplus _{\xi \in \hat G} V_\xi ^{\oplus m_\xi }\), then </p>
+<div class="displaymath" id="a0000000040">
+  \[  m_\xi \; =\;  \langle \chi _V, \chi _\xi \rangle _G \; =\;  \frac{1}{|G|}\sum _{g \in G} \chi _V(g)\,  \chi _\xi (g^{-1}).  \]
+</div>
+<p> In particular, two representations are isomorphic if and only if they have the same character. </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000039">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▶</span>
+  </div>
+  <div class="proof_content">
+  <p> Since \(\chi _V = \sum _\xi m_\xi \chi _\xi \) and the \(\chi _\xi \) are orthonormal (Theorem&#160;<a href="sect0003.html#thm:char-ortho">15</a>), taking \(\langle \cdot , \chi _\xi \rangle _G\) gives \(m_\xi \). Uniqueness of multiplicities implies isomorphism \(\Leftrightarrow \) equal characters. </p>
+
+  </div>
+</div>
+<h1 id="a0000000018">5.3 Dimension Identity</h1>
+<div class="theorem_thmwrapper theorem-style-plain" id="thm:dim-identity">
+  <div class="theorem_thmheading">
+    <span class="theorem_thmcaption">
+    Theorem
+    </span>
+    <span class="theorem_thmlabel">27</span>
+    <span class="theorem_thmtitle">Sum of squares of dimensions</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="sect0005.html#thm:dim-identity">#</a>
+    
+    <a class="icon proof" href="sect0005.html#a0000000041"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="sect0004.html#thm:peter-weyl-finite">Theorem 23</a></li>
+          
+          <li><a href="sect0004.html#thm:peter-weyl-finite">Theorem 23</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="https://JonCYeh.github.io/peter-weyl-lean/docs/find/#doc/sumSquaresDimensions" class="lean_decl">sumSquaresDimensions</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="theorem_thmcontent">
+  <p>    For any finite group \(G\), </p>
+<div class="displaymath" id="a0000000042">
+  \[  |G| \; =\;  \sum _{\xi \in \hat G} d_\xi ^2 \; =\;  \sum _{\xi \in \hat G} (\dim _k V_\xi )^2.  \]
+</div>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000041">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▶</span>
+  </div>
+  <div class="proof_content">
+  <p> Compare dimensions in the isomorphism \(k[G] \cong \bigoplus _\xi \mathrm{End}_k(V_\xi )\) from Theorem&#160;<a href="sect0004.html#thm:peter-weyl-finite">23</a>: \(\dim k[G] = |G|\) and \(\dim \mathrm{End}_k(V_\xi ) = d_\xi ^2\). </p>
+
+  </div>
+</div>
+<div class="corollary_thmwrapper theorem-style-plain" id="cor:irred-criterion">
+  <div class="corollary_thmheading">
+    <span class="corollary_thmcaption">
+    Corollary
+    </span>
+    <span class="corollary_thmlabel">28</span>
+    <span class="corollary_thmtitle">Irreducibility criterion</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="sect0005.html#cor:irred-criterion">#</a>
+    
+    <a class="icon proof" href="sect0005.html#a0000000043"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="sect0005.html#cor:multiplicity">Corollary 26</a></li>
+          
+          <li><a href="sect0003.html#thm:char-ortho">Theorem 15</a></li>
+          
+          <li><a href="sect0005.html#cor:multiplicity">Corollary 26</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="https://JonCYeh.github.io/peter-weyl-lean/docs/find/#doc/irreducibilityCriterion" class="lean_decl">irreducibilityCriterion</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="corollary_thmcontent">
+  <p>    A representation \(\rho \) is irreducible if and only if \(\langle \chi _\rho , \chi _\rho \rangle _G = 1\). </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000043">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▶</span>
+  </div>
+  <div class="proof_content">
+  <p> If \(\rho \cong \bigoplus _\xi V_\xi ^{\oplus m_\xi }\), then \(\langle \chi _\rho , \chi _\rho \rangle _G = \sum _\xi m_\xi ^2\). This equals \(1\) iff exactly one \(m_\xi = 1\) and the rest vanish, i.e. \(\rho \) is irreducible. </p>
+
+  </div>
+</div>
+
+</div> <!--main-text -->
+</div> <!-- content-wrapper -->
+</div> <!-- content -->
+</div> <!-- wrapper -->
+
+<nav class="prev_up_next">
+  <svg  id="showmore-minus" class="icon icon-eye-minus showmore"><use xlink:href="symbol-defs.svg#icon-eye-minus"></use></svg>
+
+  <svg  id="showmore-plus" class="icon icon-eye-plus showmore"><use xlink:href="symbol-defs.svg#icon-eye-plus"></use></svg>
+
+  <a href="sect0004.html" title="The Peter–Weyl Theorem for Finite Groups"><svg  class="icon icon-arrow-left "><use xlink:href="symbol-defs.svg#icon-arrow-left"></use></svg>
+</a>
+  <a href="index.html" title="Peter WWeyl Lean"><svg  class="icon icon-arrow-up "><use xlink:href="symbol-defs.svg#icon-arrow-up"></use></svg>
+</a>
+</nav>
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/plastex.js"></script>
+<script type="text/javascript" src="js/svgxuse.js"></script>
+<script type="text/javascript" src="js/js.cookie.min.js"></script>
+<script type="text/javascript" src="js/showmore.js"></script>
+</body>
+</html>

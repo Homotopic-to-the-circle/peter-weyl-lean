@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  MathJax = { 
+    tex: {
+		    inlineMath: [['$','$'], ['\\(','\\)']]
+	} }
+</script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<meta name="generator" content="plasTeX" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Finite Groups and Their Representations</title>
+<link rel="next" href="sect0002.html" title="Schur’s Lemma and Its Consequences" />
+<link rel="prev" href="index.html" title="Peter WWeyl Lean" />
+<link rel="up" href="index.html" title="Peter WWeyl Lean" />
+<link rel="stylesheet" href="styles/theme-white.css" />
+<link rel="stylesheet" href="styles/amsthm.css" />
+<link rel="stylesheet" href="styles/showmore.css" />
+<link rel="stylesheet" href="styles/blueprint.css" />
+<link rel="stylesheet" href="styles/extra_styles.css" />
+</head>
+
+<body>
+<header>
+<svg  id="toc-toggle" class="icon icon-list-numbered "><use xlink:href="symbol-defs.svg#icon-list-numbered"></use></svg>
+<h1 id="doc_title"><a href="index.html">Peter WWeyl Lean</a></h1>
+</header>
+
+<div class="wrapper">
+<nav class="toc">
+<ul class="sub-toc-0">
+<li class=" active current">
+  <a href="sect0001.html"><span class="toc_ref">1</span> <span class="toc_entry">Finite Groups and Their Representations</span></a>
+  <span class="expand-toc">▼</span>
+  <ul class="sub-toc-1 active">
+     <li class="">
+  <a href="sect0001.html#a0000000007"><span class="toc_ref">1.1</span> <span class="toc_entry">Basic Algebraic Setup</span></a>
+ </li>
+<li class="">
+  <a href="sect0001.html#a0000000008"><span class="toc_ref">1.2</span> <span class="toc_entry">Weyl Averaging and Unitarisability</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class="">
+  <a href="sect0002.html"><span class="toc_ref">2</span> <span class="toc_entry">Schur’s Lemma and Its Consequences</span></a>
+ </li>
+<li class="">
+  <a href="sect0003.html"><span class="toc_ref">3</span> <span class="toc_entry">Characters and Orthogonality</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0003.html#a0000000012"><span class="toc_ref">3.1</span> <span class="toc_entry">Characters</span></a>
+ </li>
+<li class="">
+  <a href="sect0003.html#a0000000013"><span class="toc_ref">3.2</span> <span class="toc_entry">Orthogonality of Characters</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class="">
+  <a href="sect0004.html"><span class="toc_ref">4</span> <span class="toc_entry">The Peter–Weyl Theorem for Finite Groups</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0004.html#a0000000014"><span class="toc_ref">4.1</span> <span class="toc_entry">Isotypic Decomposition</span></a>
+ </li>
+<li class="">
+  <a href="sect0004.html#a0000000015"><span class="toc_ref">4.2</span> <span class="toc_entry">The Peter–Weyl / Isotypic Decomposition Theorem</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class="">
+  <a href="sect0005.html"><span class="toc_ref">5</span> <span class="toc_entry">Consequences: Characters as Orthonormal Basis and Dimension Identity</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0005.html#a0000000016"><span class="toc_ref">5.1</span> <span class="toc_entry">Characters Form an Orthonormal Basis for Class Functions</span></a>
+ </li>
+<li class="">
+  <a href="sect0005.html#a0000000017"><span class="toc_ref">5.2</span> <span class="toc_entry">Multiplicity Formula</span></a>
+ </li>
+<li class="">
+  <a href="sect0005.html#a0000000018"><span class="toc_ref">5.3</span> <span class="toc_entry">Dimension Identity</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li ><a href="dep_graph_document.html">Dependency graph</a></li>
+</ul>
+</nav>
+
+<div class="content">
+<div class="content-wrapper">
+
+
+<div class="main-text">
+<h1 id="a0000000002">1 Finite Groups and Their Representations</h1>
+<h1 id="a0000000007">1.1 Basic Algebraic Setup</h1>
+<div class="definition_thmwrapper theorem-style-definition" id="def:finite-group">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">1</span>
+    <span class="definition_thmtitle">Finite group</span>
+    <div class="thm_header_extras">
+
+    
+    ✓
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="sect0001.html#def:finite-group">#</a>
+    
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="https://JonCYeh.github.io/peter-weyl-lean/docs/find/#doc/Fintype" class="lean_decl">Fintype</a></li>
+          
+          <li><a href="https://JonCYeh.github.io/peter-weyl-lean/docs/find/#doc/Group" class="lean_decl">Group</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="definition_thmcontent">
+  <p>   A <em>finite group</em> is a group \(G\) equipped with a <span class="ttfamily">Fintype</span> instance, i.e. a decidable enumeration of its elements. We write \(|G|\) for <span class="ttfamily">Fintype.card G</span>. </p>
+
+  </div>
+</div>
+<div class="definition_thmwrapper theorem-style-definition" id="def:fd-rep">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">2</span>
+    <span class="definition_thmtitle">Finite-dimensional representation</span>
+    <div class="thm_header_extras">
+
+    
+    ✓
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="sect0001.html#def:fd-rep">#</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="sect0001.html#def:finite-group">Definition 1</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="https://JonCYeh.github.io/peter-weyl-lean/docs/find/#doc/Representation" class="lean_decl">Representation</a></li>
+          
+          <li><a href="https://JonCYeh.github.io/peter-weyl-lean/docs/find/#doc/FDRep" class="lean_decl">FDRep</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="definition_thmcontent">
+  <p>    Let \(G\) be a finite group and \(k\) an algebraically closed field of characteristic not dividing \(|G|\) (e.g. \(k = \mathbb {C}\)). A <em>finite-dimensional \(k\)-linear representation</em> of \(G\) is a group homomorphism \(\rho \colon G \to \mathrm{GL}(V)\) for a finite-dimensional \(k\)-vector space \(V\). </p>
+<p>In Mathlib this is <span class="ttfamily">Representation k G V</span>, defined as <span class="ttfamily">G →* (V →ₗ[k] V)</span>. The category of such representations is <span class="ttfamily">FDRep k G</span>. </p>
+
+  </div>
+</div>
+<div class="definition_thmwrapper theorem-style-definition" id="def:rep-iso">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">3</span>
+    <span class="definition_thmtitle">Isomorphism of representations</span>
+    <div class="thm_header_extras">
+
+    
+    ✓
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="sect0001.html#def:rep-iso">#</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="sect0001.html#def:fd-rep">Definition 2</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="https://JonCYeh.github.io/peter-weyl-lean/docs/find/#doc/Representation.Equiv" class="lean_decl">Representation.Equiv</a></li>
+          
+          <li><a href="https://JonCYeh.github.io/peter-weyl-lean/docs/find/#doc/CategoryTheory.Iso" class="lean_decl">CategoryTheory.Iso</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="definition_thmcontent">
+  <p>    Two representations \(\rho \colon G \to \mathrm{GL}(V)\) and \(\sigma \colon G \to \mathrm{GL}(W)\) are <em>isomorphic</em> if there exists a \(k\)-linear isomorphism \(\phi \colon V \xrightarrow {\sim } W\) such that \(\phi \circ \rho (g) = \sigma (g) \circ \phi \) for all \(g \in G\). In Mathlib this is <span class="ttfamily">Representation.Equiv</span>. </p>
+
+  </div>
+</div>
+<div class="definition_thmwrapper theorem-style-definition" id="def:intertwining">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">4</span>
+    <span class="definition_thmtitle">Intertwining map</span>
+    <div class="thm_header_extras">
+
+    
+    ✓
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="sect0001.html#def:intertwining">#</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="sect0001.html#def:fd-rep">Definition 2</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="https://JonCYeh.github.io/peter-weyl-lean/docs/find/#doc/Representation.IntertwiningMap" class="lean_decl">Representation.IntertwiningMap</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="definition_thmcontent">
+  <p>    An <em>intertwining map</em> (equivariant map, \(G\)-map) between \(\rho \) and \(\sigma \) is a \(k\)-linear map \(T \colon V \to W\) satisfying \(T \circ \rho (g) = \sigma (g) \circ T\) for all \(g \in G\). The space of all such maps is <span class="ttfamily">Representation.IntertwiningMap ρ σ</span>. </p>
+
+  </div>
+</div>
+<div class="definition_thmwrapper theorem-style-definition" id="def:subrep">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">5</span>
+    <span class="definition_thmtitle">Subrepresentation and invariant subspace</span>
+    <div class="thm_header_extras">
+
+    
+    ✓
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="sect0001.html#def:subrep">#</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="sect0001.html#def:fd-rep">Definition 2</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="https://JonCYeh.github.io/peter-weyl-lean/docs/find/#doc/Representation.Subrepresentation" class="lean_decl">Representation.Subrepresentation</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="definition_thmcontent">
+  <p>    A <em>subrepresentation</em> of \(\rho \colon G \to \mathrm{GL}(V)\) is a \(G\)-invariant \(k\)-subspace \(W \subseteq V\), i.e. \(\rho (g)(W) \subseteq W\) for all \(g \in G\). </p>
+
+  </div>
+</div>
+<div class="definition_thmwrapper theorem-style-definition" id="def:irreducible">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">6</span>
+    <span class="definition_thmtitle">Irreducible representation</span>
+    <div class="thm_header_extras">
+
+    
+    ✓
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="sect0001.html#def:irreducible">#</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="sect0001.html#def:fd-rep">Definition 2</a></li>
+          
+          <li><a href="sect0001.html#def:subrep">Definition 5</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="https://JonCYeh.github.io/peter-weyl-lean/docs/find/#doc/Representation.IsIrreducible" class="lean_decl">Representation.IsIrreducible</a></li>
+          
+          <li><a href="https://JonCYeh.github.io/peter-weyl-lean/docs/find/#doc/CategoryTheory.Simple" class="lean_decl">CategoryTheory.Simple</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="definition_thmcontent">
+  <p>    A representation \(\rho \) on \(V \neq 0\) is <em>irreducible</em> if \(V\) has no proper non-zero \(G\)-invariant subspaces. </p>
+<p>In Mathlib: <span class="ttfamily">Representation.IsIrreducible ρ</span>. The categorical counterpart for <span class="ttfamily">FDRep k G</span> is the typeclass <span class="ttfamily">CategoryTheory.Simple V</span>. </p>
+
+  </div>
+</div>
+<div class="definition_thmwrapper theorem-style-definition" id="def:direct-sum">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">7</span>
+    <span class="definition_thmtitle">Direct sum of representations</span>
+    <div class="thm_header_extras">
+
+    
+    ✓
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="sect0001.html#def:direct-sum">#</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="sect0001.html#def:fd-rep">Definition 2</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="https://JonCYeh.github.io/peter-weyl-lean/docs/find/#doc/Representation.sum" class="lean_decl">Representation.sum</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="definition_thmcontent">
+  <p>    The <em>direct sum</em> \(\rho \oplus \sigma \) is the representation on \(V \oplus W\) acting diagonally. </p>
+
+  </div>
+</div>
+<h1 id="a0000000008">1.2 Weyl Averaging and Unitarisability</h1>
+<div class="lemma_thmwrapper theorem-style-plain" id="lem:weyl-avg">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">8</span>
+    <span class="lemma_thmtitle">Weyl averaging trick</span>
+    <div class="thm_header_extras">
+
+    
+    ✓
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="sect0001.html#lem:weyl-avg">#</a>
+    
+    <a class="icon proof" href="sect0001.html#a0000000009"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="sect0001.html#def:fd-rep">Definition 2</a></li>
+          
+          <li><a href="sect0001.html#def:finite-group">Definition 1</a></li>
+          
+          <li><a href="sect0001.html#def:finite-group">Definition 1</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="https://JonCYeh.github.io/peter-weyl-lean/docs/find/#doc/LinearMap.sumOfConjugatesEquivariant" class="lean_decl">LinearMap.sumOfConjugatesEquivariant</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="lemma_thmcontent">
+  <p>    Let \(\rho \colon G \to \mathrm{GL}(V)\) be a finite-dimensional representation and \(\pi \colon W \to V\) a \(k\)-linear retraction of a \(G\)-equivariant inclusion \(i \colon V \hookrightarrow W\). The averaged map </p>
+<div class="displaymath" id="a0000000010">
+  \[  \bar\pi \; :=\;  \frac{1}{|G|} \sum _{g \in G} \rho (g)^{-1} \circ \pi \circ \rho (g)  \]
+</div>
+<p> is a \(G\)-equivariant retraction of \(i\). </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000009">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▶</span>
+  </div>
+  <div class="proof_content">
+  <p> This is <span class="ttfamily">LinearMap.sumOfConjugatesEquivariant</span> in <span class="ttfamily">Mathlib.RepresentationTheory.Maschke</span>. </p>
+
+  </div>
+</div>
+<div class="theorem_thmwrapper theorem-style-plain" id="thm:maschke">
+  <div class="theorem_thmheading">
+    <span class="theorem_thmcaption">
+    Theorem
+    </span>
+    <span class="theorem_thmlabel">9</span>
+    <span class="theorem_thmtitle">Maschke’s theorem</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="sect0001.html#thm:maschke">#</a>
+    
+    <a class="icon proof" href="sect0001.html#a0000000011"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="sect0001.html#lem:weyl-avg">Lemma 8</a></li>
+          
+          <li><a href="sect0001.html#def:irreducible">Definition 6</a></li>
+          
+          <li><a href="sect0001.html#def:direct-sum">Definition 7</a></li>
+          
+          <li><a href="sect0001.html#lem:weyl-avg">Lemma 8</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="https://JonCYeh.github.io/peter-weyl-lean/docs/find/#doc/Representation.isSemisimple" class="lean_decl">Representation.isSemisimple</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="theorem_thmcontent">
+  <p>    Every finite-dimensional representation of a finite group \(G\) over a field \(k\) with \(\mathrm{char}(k) \nmid |G|\) is <em>semisimple</em>: it decomposes as a direct sum of irreducible subrepresentations. </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000011">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▶</span>
+  </div>
+  <div class="proof_content">
+  <p> By induction on \(\dim V\). If \(V\) is irreducible, done. Otherwise, pick a proper invariant subspace \(W\); apply Lemma&#160;<a href="sect0001.html#lem:weyl-avg">8</a> to produce a \(G\)-equivariant complement \(W'\), giving \(V \cong W \oplus W'\). Both summands are strictly smaller, so induction applies. </p>
+
+  </div>
+</div>
+
+</div> <!--main-text -->
+</div> <!-- content-wrapper -->
+</div> <!-- content -->
+</div> <!-- wrapper -->
+
+<nav class="prev_up_next">
+  <svg  id="showmore-minus" class="icon icon-eye-minus showmore"><use xlink:href="symbol-defs.svg#icon-eye-minus"></use></svg>
+
+  <svg  id="showmore-plus" class="icon icon-eye-plus showmore"><use xlink:href="symbol-defs.svg#icon-eye-plus"></use></svg>
+
+  <a href="index.html" title="Peter WWeyl Lean"><svg  class="icon icon-arrow-left "><use xlink:href="symbol-defs.svg#icon-arrow-left"></use></svg>
+</a>
+  <a href="index.html" title="Peter WWeyl Lean"><svg  class="icon icon-arrow-up "><use xlink:href="symbol-defs.svg#icon-arrow-up"></use></svg>
+</a>
+  <a href="sect0002.html" title="Schur’s Lemma and Its Consequences"><svg  class="icon icon-arrow-right "><use xlink:href="symbol-defs.svg#icon-arrow-right"></use></svg>
+</a>
+</nav>
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/plastex.js"></script>
+<script type="text/javascript" src="js/svgxuse.js"></script>
+<script type="text/javascript" src="js/js.cookie.min.js"></script>
+<script type="text/javascript" src="js/showmore.js"></script>
+</body>
+</html>

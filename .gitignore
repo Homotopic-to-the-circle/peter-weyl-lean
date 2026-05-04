@@ -7,10 +7,10 @@ venv/
 .cache/*
 ## Blueprint
 /blueprint/print/print.log
-/blueprint/web/
+#/blueprint/web/
 /blueprint/src/web.paux
 /blueprint/src/web.bbl
-/blueprint/print/
+#/blueprint/print/
 ## TeX
 *.aux
 *.lof

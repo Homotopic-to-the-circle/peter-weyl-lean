@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  MathJax = { 
+    tex: {
+		    inlineMath: [['$','$'], ['\\(','\\)']]
+	} }
+</script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<meta name="generator" content="plasTeX" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The Peter–Weyl Theorem for Finite Groups</title>
+<link rel="next" href="sect0005.html" title="Consequences: Characters as Orthonormal Basis and Dimension Identity" />
+<link rel="prev" href="sect0003.html" title="Characters and Orthogonality" />
+<link rel="up" href="index.html" title="Peter WWeyl Lean" />
+<link rel="stylesheet" href="styles/theme-white.css" />
+<link rel="stylesheet" href="styles/amsthm.css" />
+<link rel="stylesheet" href="styles/showmore.css" />
+<link rel="stylesheet" href="styles/blueprint.css" />
+<link rel="stylesheet" href="styles/extra_styles.css" />
+</head>
+
+<body>
+<header>
+<svg  id="toc-toggle" class="icon icon-list-numbered "><use xlink:href="symbol-defs.svg#icon-list-numbered"></use></svg>
+<h1 id="doc_title"><a href="index.html">Peter WWeyl Lean</a></h1>
+</header>
+
+<div class="wrapper">
+<nav class="toc">
+<ul class="sub-toc-0">
+<li class="">
+  <a href="sect0001.html"><span class="toc_ref">1</span> <span class="toc_entry">Finite Groups and Their Representations</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0001.html#a0000000007"><span class="toc_ref">1.1</span> <span class="toc_entry">Basic Algebraic Setup</span></a>
+ </li>
+<li class="">
+  <a href="sect0001.html#a0000000008"><span class="toc_ref">1.2</span> <span class="toc_entry">Weyl Averaging and Unitarisability</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class="">
+  <a href="sect0002.html"><span class="toc_ref">2</span> <span class="toc_entry">Schur’s Lemma and Its Consequences</span></a>
+ </li>
+<li class="">
+  <a href="sect0003.html"><span class="toc_ref">3</span> <span class="toc_entry">Characters and Orthogonality</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0003.html#a0000000012"><span class="toc_ref">3.1</span> <span class="toc_entry">Characters</span></a>
+ </li>
+<li class="">
+  <a href="sect0003.html#a0000000013"><span class="toc_ref">3.2</span> <span class="toc_entry">Orthogonality of Characters</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class=" active current">
+  <a href="sect0004.html"><span class="toc_ref">4</span> <span class="toc_entry">The Peter–Weyl Theorem for Finite Groups</span></a>
+  <span class="expand-toc">▼</span>
+  <ul class="sub-toc-1 active">
+     <li class="">
+  <a href="sect0004.html#a0000000014"><span class="toc_ref">4.1</span> <span class="toc_entry">Isotypic Decomposition</span></a>
+ </li>
+<li class="">
+  <a href="sect0004.html#a0000000015"><span class="toc_ref">4.2</span> <span class="toc_entry">The Peter–Weyl / Isotypic Decomposition Theorem</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class="">
+  <a href="sect0005.html"><span class="toc_ref">5</span> <span class="toc_entry">Consequences: Characters as Orthonormal Basis and Dimension Identity</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0005.html#a0000000016"><span class="toc_ref">5.1</span> <span class="toc_entry">Characters Form an Orthonormal Basis for Class Functions</span></a>
+ </li>
+<li class="">
+  <a href="sect0005.html#a0000000017"><span class="toc_ref">5.2</span> <span class="toc_entry">Multiplicity Formula</span></a>
+ </li>
+<li class="">
+  <a href="sect0005.html#a0000000018"><span class="toc_ref">5.3</span> <span class="toc_entry">Dimension Identity</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li ><a href="dep_graph_document.html">Dependency graph</a></li>
+</ul>
+</nav>
+
+<div class="content">
+<div class="content-wrapper">
+
+
+<div class="main-text">
+<h1 id="a0000000005">4 The Peter–Weyl Theorem for Finite Groups</h1>
+<h1 id="a0000000014">4.1 Isotypic Decomposition</h1>
+<div class="definition_thmwrapper theorem-style-definition" id="def:irr-set">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">17</span>
+    <span class="definition_thmtitle">Unitary dual / irrep index set</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="sect0004.html#def:irr-set">#</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="sect0001.html#def:irreducible">Definition 6</a></li>
+          
+          <li><a href="sect0001.html#def:rep-iso">Definition 3</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="https://JonCYeh.github.io/peter-weyl-lean/docs/find/#doc/FDRep.SimpleIrreps" class="lean_decl">FDRep.SimpleIrreps</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="definition_thmcontent">
+  <p>    We denote by \(\hat G\) a set of representatives of isomorphism classes of irreducible finite-dimensional \(k\)-representations of \(G\). For each \(\xi \in \hat G\), let \(V_\xi \) denote the underlying vector space and \(d_\xi := \dim _k V_\xi \). </p>
+
+  </div>
+</div>
+<div class="definition_thmwrapper theorem-style-definition" id="def:isotypic">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">18</span>
+    <span class="definition_thmtitle">Isotypic component</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="sect0004.html#def:isotypic">#</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="sect0001.html#def:fd-rep">Definition 2</a></li>
+          
+          <li><a href="sect0001.html#def:irreducible">Definition 6</a></li>
+          
+          <li><a href="sect0004.html#def:irr-set">Definition 17</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="https://JonCYeh.github.io/peter-weyl-lean/docs/find/#doc/isotypicComponent" class="lean_decl">isotypicComponent</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="definition_thmcontent">
+  <p>    For \(\xi \in \hat G\) and a representation \(\rho \) on \(V\), the <em>\(\xi \)-isotypic component</em> \(V_{\! (\xi )}\) is the sum of all subrepresentations of \(V\) isomorphic to \(\rho _\xi \). </p>
+
+  </div>
+</div>
+<div class="proposition_thmwrapper theorem-style-plain" id="prop:isotypic-ortho">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">19</span>
+    <span class="proposition_thmtitle">Isotypic components are pairwise orthogonal</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="sect0004.html#prop:isotypic-ortho">#</a>
+    
+    <a class="icon proof" href="sect0004.html#a0000000030"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="sect0004.html#def:isotypic">Definition 18</a></li>
+          
+          <li><a href="sect0002.html#thm:schur">Theorem 10</a></li>
+          
+          <li><a href="sect0004.html#cor:irr-iso-orthogonal">Corollary 20</a></li>
+          
+          <li><a href="sect0002.html#thm:schur">Theorem 10</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="https://JonCYeh.github.io/peter-weyl-lean/docs/find/#doc/isotypicComponent_orthogonal" class="lean_decl">isotypicComponent_orthogonal</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="proposition_thmcontent">
+  <p>    For \(\xi \neq \xi '\) in \(\hat G\), any subrepresentation isomorphic to \(\rho _\xi \) is orthogonal (in the Hom sense: no nonzero equivariant maps) to any subrepresentation isomorphic to \(\rho _{\xi '}\). </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000030">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▶</span>
+  </div>
+  <div class="proof_content">
+  <p> Immediate from Theorem&#160;<a href="sect0002.html#thm:schur">10</a>: a nonzero equivariant map between non-isomorphic irreducibles cannot exist. </p>
+
+  </div>
+</div>
+<div class="corollary_thmwrapper theorem-style-plain" id="cor:irr-iso-orthogonal">
+  <div class="corollary_thmheading">
+    <span class="corollary_thmcaption">
+    Corollary
+    </span>
+    <span class="corollary_thmlabel">20</span>
+    <span class="corollary_thmtitle">Non-isomorphic irreducible subrepresentations are linearly disjoint</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="sect0004.html#cor:irr-iso-orthogonal">#</a>
+    
+    <a class="icon proof" href="sect0004.html#a0000000031"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="sect0002.html#thm:schur">Theorem 10</a></li>
+          
+          <li><a href="sect0002.html#thm:schur">Theorem 10</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="https://JonCYeh.github.io/peter-weyl-lean/docs/find/#doc/subrep_noniso_orthogonal" class="lean_decl">subrep_noniso_orthogonal</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="corollary_thmcontent">
+  <p>    If \(W_1, W_2 \subseteq V\) are irreducible subrepresentations with \(\rho \! \restriction _{W_1} \not\cong \rho \! \restriction _{W_2}\), then \(W_1 \cap W_2 = 0\). </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000031">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▶</span>
+  </div>
+  <div class="proof_content">
+  <p> Apply Schur’s Lemma to the inclusion \(W_1 \hookrightarrow V\) followed by projection onto \(W_2\). Since the representations are non-isomorphic the composite is zero, so \(W_1 \cap W_2 = 0\). </p>
+
+  </div>
+</div>
+<div class="proposition_thmwrapper theorem-style-plain" id="prop:isotypic-structure">
+  <div class="proposition_thmheading">
+    <span class="proposition_thmcaption">
+    Proposition
+    </span>
+    <span class="proposition_thmlabel">21</span>
+    <span class="proposition_thmtitle">Structure of isotypic component</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="sect0004.html#prop:isotypic-structure">#</a>
+    
+    <a class="icon proof" href="sect0004.html#a0000000032"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="sect0004.html#def:isotypic">Definition 18</a></li>
+          
+          <li><a href="sect0002.html#thm:schur">Theorem 10</a></li>
+          
+          <li><a href="sect0001.html#thm:maschke">Theorem 9</a></li>
+          
+          <li><a href="sect0002.html#thm:schur">Theorem 10</a></li>
+          
+          <li><a href="sect0001.html#thm:maschke">Theorem 9</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="https://JonCYeh.github.io/peter-weyl-lean/docs/find/#doc/isotypicComponent_iso_power" class="lean_decl">isotypicComponent_iso_power</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="proposition_thmcontent">
+  <p>    For \(\xi \in \hat G\), the isotypic component \(V_{\! (\xi )}\) satisfies: </p>
+<ol class="enumerate">
+  <li><p>\(V_{\! (\xi )} \cong \rho _\xi ^{\oplus m_\xi }\) for a uniquely determined non-negative integer \(m_\xi \) (the <em>multiplicity</em> of \(\rho _\xi \) in \(\rho \)). </p>
+</li>
+  <li><p>\(\dim _k V_{\! (\xi )} = m_\xi \cdot d_\xi \). </p>
+</li>
+</ol>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000032">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▶</span>
+  </div>
+  <div class="proof_content">
+  <p> By Maschke (Theorem&#160;<a href="sect0001.html#thm:maschke">9</a>), \(V_{\! (\xi )}\) is semisimple; all its irreducible summands are isomorphic to \(\rho _\xi \) by definition. Schur’s Lemma forces \(\dim \mathrm{Hom}_G(V_{\! (\xi )}, \rho _\xi ) = m_\xi \), uniquely determining the multiplicity. </p>
+
+  </div>
+</div>
+<h1 id="a0000000015">4.2 The Peter–Weyl / Isotypic Decomposition Theorem</h1>
+<div class="theorem_thmwrapper theorem-style-plain" id="thm:isotypic-decomp">
+  <div class="theorem_thmheading">
+    <span class="theorem_thmcaption">
+    Theorem
+    </span>
+    <span class="theorem_thmlabel">22</span>
+    <span class="theorem_thmtitle">Isotypic decomposition</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="sect0004.html#thm:isotypic-decomp">#</a>
+    
+    <a class="icon proof" href="sect0004.html#a0000000033"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="sect0004.html#def:isotypic">Definition 18</a></li>
+          
+          <li><a href="sect0004.html#prop:isotypic-ortho">Proposition 19</a></li>
+          
+          <li><a href="sect0004.html#prop:isotypic-structure">Proposition 21</a></li>
+          
+          <li><a href="sect0001.html#thm:maschke">Theorem 9</a></li>
+          
+          <li><a href="sect0001.html#thm:maschke">Theorem 9</a></li>
+          
+          <li><a href="sect0004.html#prop:isotypic-ortho">Proposition 19</a></li>
+          
+          <li><a href="sect0004.html#prop:isotypic-structure">Proposition 21</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="https://JonCYeh.github.io/peter-weyl-lean/docs/find/#doc/isotypicDecomposition" class="lean_decl">isotypicDecomposition</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="theorem_thmcontent">
+  <p>    Every finite-dimensional representation \(\rho \) of \(G\) decomposes as </p>
+<div class="displaymath" id="a0000000034">
+  \[  V \; \cong \;  \bigoplus _{\xi \in \hat G} V_{\! (\xi )} \; \cong \;  \bigoplus _{\xi \in \hat G} \rho _\xi ^{\oplus m_\xi },  \]
+</div>
+<p> and this decomposition is unique (the multiplicities \(m_\xi \) are uniquely determined). </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000033">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▶</span>
+  </div>
+  <div class="proof_content">
+  <p> By Theorem&#160;<a href="sect0001.html#thm:maschke">9</a>, \(V\) is a direct sum of irreducibles. Group the summands by isomorphism class. The components corresponding to different classes are linearly independent by Corollary&#160;<a href="sect0004.html#cor:irr-iso-orthogonal">20</a>, and together they span \(V\), giving the direct sum decomposition. Uniqueness of \(m_\xi \) follows from Corollary&#160;<a href="sect0003.html#cor:inner-prod-hom">16</a>: \(m_\xi = \langle \chi _\rho , \chi _{\rho _\xi } \rangle _G\). </p>
+
+  </div>
+</div>
+<div class="theorem_thmwrapper theorem-style-plain" id="thm:peter-weyl-finite">
+  <div class="theorem_thmheading">
+    <span class="theorem_thmcaption">
+    Theorem
+    </span>
+    <span class="theorem_thmlabel">23</span>
+    <span class="theorem_thmtitle">Peter–Weyl theorem for finite groups</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="sect0004.html#thm:peter-weyl-finite">#</a>
+    
+    <a class="icon proof" href="sect0004.html#a0000000035"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="sect0004.html#thm:isotypic-decomp">Theorem 22</a></li>
+          
+          <li><a href="sect0004.html#def:irr-set">Definition 17</a></li>
+          
+          <li><a href="sect0004.html#thm:isotypic-decomp">Theorem 22</a></li>
+          
+          <li><a href="sect0003.html#cor:inner-prod-hom">Corollary 16</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="https://JonCYeh.github.io/peter-weyl-lean/docs/find/#doc/PeterWeyl.finite" class="lean_decl">PeterWeyl.finite</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="theorem_thmcontent">
+  <p>    Let \(k[G]\) denote the group algebra, viewed as the regular representation of \(G\) by left multiplication. Then </p>
+<div class="displaymath" id="a0000000036">
+  \[  k[G] \; \cong \;  \bigoplus _{\xi \in \hat G}\;  \rho _\xi ^{\oplus d_\xi } \quad \text{as left $G$-representations,}  \]
+</div>
+<p> where \(d_\xi = \dim _k V_\xi \). Equivalently, as two-sided \(k[G]\)-modules, </p>
+<div class="displaymath" id="a0000000037">
+  \[  k[G] \; \cong \;  \bigoplus _{\xi \in \hat G} \mathrm{End}_k(V_\xi ).  \]
+</div>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000035">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▶</span>
+  </div>
+  <div class="proof_content">
+  <p> Apply Theorem&#160;<a href="sect0004.html#thm:isotypic-decomp">22</a> to the regular representation. The multiplicity of \(\rho _\xi \) in \(k[G]\) equals \(m_\xi = \langle \chi _{k[G]}, \chi _{\rho _\xi } \rangle _G = d_\xi \), which one checks directly: \(\chi _{k[G]}(g) = |G| \cdot \mathbf{1}_{g=e}\), so \(\langle \chi _{k[G]}, \chi _{\rho _\xi } \rangle _G = \chi _{\rho _\xi }(e) = d_\xi \). </p>
+
+  </div>
+</div>
+
+</div> <!--main-text -->
+</div> <!-- content-wrapper -->
+</div> <!-- content -->
+</div> <!-- wrapper -->
+
+<nav class="prev_up_next">
+  <svg  id="showmore-minus" class="icon icon-eye-minus showmore"><use xlink:href="symbol-defs.svg#icon-eye-minus"></use></svg>
+
+  <svg  id="showmore-plus" class="icon icon-eye-plus showmore"><use xlink:href="symbol-defs.svg#icon-eye-plus"></use></svg>
+
+  <a href="sect0003.html" title="Characters and Orthogonality"><svg  class="icon icon-arrow-left "><use xlink:href="symbol-defs.svg#icon-arrow-left"></use></svg>
+</a>
+  <a href="index.html" title="Peter WWeyl Lean"><svg  class="icon icon-arrow-up "><use xlink:href="symbol-defs.svg#icon-arrow-up"></use></svg>
+</a>
+  <a href="sect0005.html" title="Consequences: Characters as Orthonormal Basis and Dimension Identity"><svg  class="icon icon-arrow-right "><use xlink:href="symbol-defs.svg#icon-arrow-right"></use></svg>
+</a>
+</nav>
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/plastex.js"></script>
+<script type="text/javascript" src="js/svgxuse.js"></script>
+<script type="text/javascript" src="js/js.cookie.min.js"></script>
+<script type="text/javascript" src="js/showmore.js"></script>
+</body>
+</html>
