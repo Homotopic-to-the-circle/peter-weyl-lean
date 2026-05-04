@@ -1,591 +1,1276 @@
-% In this file you should put the actual content of the blueprint.
-% It will be used both by the web and the print version.
-% It should *not* include the \begin{document}
+% content.tex  —  leanblueprint for Peter–Weyl / non-abelian Fourier analysis on
+% finite groups.  Following T. Tao,
+% https://terrytao.wordpress.com/2011/01/23/the-peter-weyl-theorem-and-non-abelian-fourier-analysis-on-compact-groups/
+% specialised to the finite-group case throughout.
 %
-% If you want to split the blueprint content into several files then
-% the current file can be a simple sequence of \input. Otherwise It
-% can start with a \section or \chapter for instance.
-
-% content.tex  —  leanblueprint for Peter–Weyl / finite-group representation theory
-% Following: T. Tao, https://terrytao.wordpress.com/2011/01/23/the-peter-weyl-theorem-and-non-abelian-fourier-analysis-on-compact-groups/
-% Focused on the finite-group case throughout.
+% Design principles for autoformalisation:
+%   * atomic lemmas: each step that can be a self-contained Lean declaration
+%     is its own \begin{lemma}…\end{lemma} with a small, well-typed signature.
+%   * every \lean{...} reference is a real Mathlib name unless tagged [NEW].
+%   * Mathlib availability key in comments:
+%       [ML]  = already in Mathlib; \mathlibok and \leanok appropriate.
+%       [~ML] = close analogue exists in Mathlib; minor adaptation needed.
+%       [NEW] = not yet in Mathlib; needs local proof.
+%   * we use Mathlib's bundled API throughout:
+%       - representations: Representation k G V (= G →* (V →ₗ[k] V)) and the
+%         category Rep k G of bundled representations; finite-dimensional
+%         versions live in FDRep k G.
+%       - irreducibility: CategoryTheory.Simple V for V : FDRep k G; equivalent
+%         to IsSimpleModule (MonoidAlgebra k G) ρ.asModule.
+%       - intertwining maps: morphisms V ⟶ W in Rep k G / FDRep k G.
+%       - Maschke / semisimplicity:
+%         MonoidAlgebra.Submodule.instIsSemisimpleModule
+%         MonoidAlgebra.Submodule.exists_isCompl
+%         LinearMap.equivariantProjection / sumOfConjugatesEquivariant.
+%       - characters: FDRep.character, FDRep.char_orthonormal,
+%         FDRep.average_char_eq_finrank_invariants,
+%         Representation.card_inv_mul_sum_char_mul_char_eq_finrank.
 %
-% CONTRIBUTION POINTS OVERVIEW:
-% This blueprint outlines key theorems in representation theory for finite groups.
-% Areas marked [NEW] are not yet fully formalized in Mathlib and represent
-% opportunities for contributions:
-% 1. Schur's Lemma: Already verified, but extensions possible.
-% 2. The Peter-Weyl Theorem: Core theorem needing formalization.
-% 3. Parseval's Formula: Dimension identity and related equalities.
-% 4. Orthogonality of Irreducible Representations: Under Hilbert-Schmidt inner product.
-%
-% Mathlib availability key used in comments:
-%   [ML]  = already in Mathlib, \mathlibok is appropriate
-%   [~ML] = close analogue exists; minor adaptation needed
-%   [NEW] = not yet in Mathlib; needs local proof
+% Throughout this blueprint we fix:
+%   * a finite group G (Mathlib: [Group G] [Fintype G] or [Finite G]),
+%   * an algebraically closed field k (Mathlib: [Field k] [IsAlgClosed k])
+%     in which the order of G is invertible (Mathlib:
+%     [Invertible (Fintype.card G : k)] or equivalently [NeZero (Nat.card G : k)]).
+%   The classical case k = ℂ satisfies all of these.
 
-\chapter{Finite Groups and Their Representations}
+\chapter{Background: Finite Groups, Representations, Intertwiners}
+\label{chap:background}
 
-\section{Basic Algebraic Setup}
+\section{Hypotheses and Notation}
 
-\begin{definition}[Finite group]
-  \label{def:finite-group}
-  \lean{Fintype, Group}
+\begin{definition}[Standing hypotheses]
+  \label{def:standing-hypotheses}
   \mathlibok
-  % [ML] Group is Mathlib.Algebra.Group.Defs; Fintype is Mathlib.Data.Fintype.Defs.
-  A \emph{finite group} is a group $G$ equipped with a \texttt{Fintype} instance,
-  i.e.\ a decidable enumeration of its elements. We write $|G|$ for
-  \texttt{Fintype.card G}.
+  % [ML] Group, Fintype, Field, IsAlgClosed, Invertible all in Mathlib core.
+  Throughout the blueprint the symbol $G$ denotes a finite group: in Lean,
+  \begin{center}
+    \texttt{[Group G] [Fintype G]}.
+  \end{center}
+  The symbol $k$ denotes an algebraically closed field whose characteristic does
+  not divide $|G|$:
+  \begin{center}
+    \texttt{[Field k] [IsAlgClosed k] [Invertible ((Fintype.card G : k))]}.
+  \end{center}
+  We write $|G|$ for \texttt{Fintype.card G} and view it as an element of $k$
+  via the canonical map $\mathbb Z \to k$.
 \end{definition}
 
-\begin{definition}[Finite-dimensional representation]
-  \label{def:fd-rep}
-  \lean{Representation, FDRep}
-  \mathlibok
-  % [ML] Representation k G V := G →* (V →ₗ[k] V)  in Mathlib.RepresentationTheory.Basic
-  %      FDRep k G  in Mathlib.RepresentationTheory.FDRep (categorical wrapper)
-  \uses{def:finite-group}
-  Let $G$ be a finite group and $k$ an algebraically closed field of
-  characteristic not dividing $|G|$ (e.g.\ $k = \mathbb{C}$).
-  A \emph{finite-dimensional $k$-linear representation} of $G$ is a group
-  homomorphism $\rho \colon G \to \mathrm{GL}(V)$ for a finite-dimensional
-  $k$-vector space $V$.
+\section{Representations and Their Bundlings}
 
-  In Mathlib this is \texttt{Representation k G V}, defined as
-  \texttt{G →* (V →ₗ[k] V)}.  The category of such representations is
-  \texttt{FDRep k G}.
+\begin{definition}[$k$-linear representation]
+  \label{def:representation}
+  \lean{Representation}
+  \mathlibok
+  % [ML] Mathlib.RepresentationTheory.Basic:
+  %   Representation k G V := G →* (V →ₗ[k] V)  as an abbreviation.
+  \uses{def:standing-hypotheses}
+  A \emph{$k$-linear representation} of $G$ on a $k$-module $V$ is a monoid
+  homomorphism $\rho : G \to (V \to_{\!\ell[k]} V)^{\!\times}$ from $G$ into the
+  multiplicative monoid of $k$-linear endomorphisms of $V$. In Mathlib this is
+  the abbreviation \texttt{Representation k G V := G →* (V →ₗ[k] V)}.
+\end{definition}
+
+\begin{definition}[$\rho.\mathrm{asModule}$ : MonoidAlgebra-module structure]
+  \label{def:as-module}
+  \lean{Representation.asModule}
+  \mathlibok
+  % [ML] Mathlib.RepresentationTheory.Basic:
+  %   ρ.asModule : Type, with [Module (MonoidAlgebra k G) ρ.asModule].
+  %   This is V with the k[G]-action (∑_g a_g g) • v = ∑_g a_g · ρ(g) v.
+  \uses{def:representation}
+  Given $\rho : \mathrm{Representation}\ k\ G\ V$, the type
+  \texttt{ρ.asModule} carries a canonical \texttt{MonoidAlgebra k G}-module
+  structure that extends the $k$-action on $V$. Conversely, any
+  $k[G]$-module gives rise to a representation. This identification (Mathlib
+  records it as the equivalence \texttt{Rep.equivalenceModuleMonoidAlgebra}) is
+  the bridge between representation-theoretic and module-theoretic statements.
+\end{definition}
+
+\begin{definition}[Bundled categories \texttt{Rep k G} and \texttt{FDRep k G}]
+  \label{def:rep-categories}
+  \lean{Rep, FDRep}
+  \mathlibok
+  % [ML] Mathlib.RepresentationTheory.Rep, Mathlib.RepresentationTheory.FDRep.
+  %   Rep k G   : k-linear abelian symmetric monoidal category of all reps.
+  %   FDRep k G : full subcategory of finite-dimensional reps.
+  \uses{def:representation}
+  \texttt{Rep k G} is the category of $k$-linear $G$-representations:
+  objects are pairs $(V, \rho)$ as above, morphisms are $G$-equivariant
+  $k$-linear maps. \texttt{FDRep k G} is the full subcategory of finite-dimensional
+  representations. For $V : \texttt{FDRep k G}$, the underlying vector space is
+  \texttt{V.V} (or by coercion just \texttt{V}) and the action is
+  \texttt{V.ρ : G →* (V →ₗ[k] V)}.
+\end{definition}
+
+\begin{definition}[Intertwining map = morphism in \texttt{FDRep k G}]
+  \label{def:intertwiner}
+  \lean{FDRep}
+  \mathlibok
+  % [ML] In Mathlib, an intertwining map between V W : FDRep k G is just
+  %   a morphism V ⟶ W of FDRep k G. Concretely Action.Hom : the underlying
+  %   k-linear map together with the equivariance square.
+  %   The k-vector space structure on (V ⟶ W) is FDRep.instAddCommGroup +
+  %   FDRep.instModule, and finite-dimensionality is FDRep.instFiniteDimensional.
+  \uses{def:rep-categories}
+  An \emph{intertwining map} (or \emph{$G$-map}) from $V$ to $W$ in
+  \texttt{FDRep k G} is a morphism $V \longrightarrow W$, i.e.\ a $k$-linear
+  map $T : V \to W$ such that $T \circ \rho_V(g) = \rho_W(g) \circ T$ for all
+  $g \in G$. The hom space $V \to W$ is finite-dimensional over $k$.
 \end{definition}
 
 \begin{definition}[Isomorphism of representations]
   \label{def:rep-iso}
-  \lean{Representation.Equiv, CategoryTheory.Iso}
+  \lean{CategoryTheory.Iso}
   \mathlibok
-  % [ML] Representation.Equiv in Mathlib.RepresentationTheory.Intertwining
-  \uses{def:fd-rep}
-  Two representations $\rho \colon G \to \mathrm{GL}(V)$ and
-  $\sigma \colon G \to \mathrm{GL}(W)$ are \emph{isomorphic} if there exists a
-  $k$-linear isomorphism $\phi \colon V \xrightarrow{\sim} W$ such that
-  $\phi \circ \rho(g) = \sigma(g) \circ \phi$ for all $g \in G$.
-  In Mathlib this is \texttt{Representation.Equiv}.
+  % [ML] CategoryTheory.Iso V W in Rep k G / FDRep k G is the standard
+  %   categorical isomorphism: a pair of mutually-inverse intertwiners.
+  \uses{def:intertwiner}
+  Two representations $V, W : \texttt{FDRep k G}$ are \emph{isomorphic},
+  $V \cong W$, if there is an isomorphism $V \cong W$ in the category
+  \texttt{FDRep k G}: equivalently, a $k$-linear isomorphism whose underlying
+  map is $G$-equivariant.
 \end{definition}
 
-\begin{definition}[Intertwining map]
-  \label{def:intertwining}
-  \lean{Representation.IntertwiningMap}
-  \mathlibok
-  % [ML] Representation.IntertwiningMap in Mathlib.RepresentationTheory.Intertwining
-  \uses{def:fd-rep}
-  An \emph{intertwining map} (equivariant map, $G$-map) between $\rho$ and
-  $\sigma$ is a $k$-linear map $T \colon V \to W$ satisfying
-  $T \circ \rho(g) = \sigma(g) \circ T$ for all $g \in G$.
-  The space of all such maps is \texttt{Representation.IntertwiningMap ρ σ}.
-\end{definition}
-
-\begin{definition}[Subrepresentation and invariant subspace]
+\begin{definition}[Subrepresentation, invariants]
   \label{def:subrep}
-  \lean{Representation.Subrepresentation}
+  \lean{Representation.invariants}
   \mathlibok
-  % [ML] Submodule over the group algebra; invariant subspaces correspond to
-  %      submodules of ρ.asModule
-  \uses{def:fd-rep}
-  A \emph{subrepresentation} of $\rho \colon G \to \mathrm{GL}(V)$ is a
-  $G$-invariant $k$-subspace $W \subseteq V$, i.e.\ $\rho(g)(W) \subseteq W$
-  for all $g \in G$.
-\end{definition}
-
-\begin{definition}[Irreducible representation]
-  \label{def:irreducible}
-  \lean{Representation.IsIrreducible, CategoryTheory.Simple}
-  \mathlibok
-  % [ML] Representation.IsIrreducible in Mathlib.RepresentationTheory.Irreducible
-  %      CategoryTheory.Simple (categorical version) used in FDRep
-  \uses{def:fd-rep, def:subrep}
-  A representation $\rho$ on $V \neq 0$ is \emph{irreducible} if $V$ has no
-  proper non-zero $G$-invariant subspaces.
-
-  In Mathlib: \texttt{Representation.IsIrreducible ρ}.  The categorical
-  counterpart for \texttt{FDRep k G} is the typeclass
-  \texttt{CategoryTheory.Simple V}.
+  % [ML] Submodules of ρ.asModule (over MonoidAlgebra k G) are exactly
+  %   G-invariant k-subspaces.  The fixed-point subspace is
+  %   Representation.invariants ρ : Submodule k V.
+  \uses{def:as-module}
+  A \emph{subrepresentation} of $\rho$ on $V$ is an
+  \texttt{(MonoidAlgebra k G)}-submodule of \texttt{ρ.asModule}; equivalently,
+  a $k$-subspace $W \subseteq V$ with $\rho(g)(W) \subseteq W$ for every
+  $g \in G$. The \emph{$G$-invariants} are
+  $V^G := \{v \in V : \rho(g)v = v\ \forall g\}$, a $k$-subspace
+  \texttt{Representation.invariants ρ}.
 \end{definition}
 
 \begin{definition}[Direct sum of representations]
   \label{def:direct-sum}
-  \lean{Representation.sum}
   \mathlibok
-  % [ML] available via the monoidal/biproduct structure on FDRep k G
-  \uses{def:fd-rep}
-  The \emph{direct sum} $\rho \oplus \sigma$ is the representation on $V \oplus W$
-  acting diagonally.
+  % [ML] FDRep k G has biproducts (categorical (co)products coincide because
+  %   the category is abelian k-linear). Concretely V ⊞ W with diagonal action.
+  \uses{def:rep-categories}
+  The category \texttt{FDRep k G} has biproducts: for $V, W : \texttt{FDRep k G}$
+  there is $V \oplus W : \texttt{FDRep k G}$ (notation \texttt{V ⊞ W}) on the
+  underlying vector space $V \oplus W$ with the diagonal action.
 \end{definition}
 
-\section{Weyl Averaging and Unitarisability}
-
-\begin{lemma}[Weyl averaging trick]
-  \label{lem:weyl-avg}
-  \lean{LinearMap.sumOfConjugatesEquivariant}
+\begin{definition}[Irreducible representation]
+  \label{def:simple}
+  \lean{CategoryTheory.Simple}
   \mathlibok
-  % [ML] Mathlib.RepresentationTheory.Maschke constructs equivariant retractions
-  %      via exactly this averaging argument.
-  \uses{def:fd-rep, def:finite-group}
-  Let $\rho \colon G \to \mathrm{GL}(V)$ be a finite-dimensional representation
-  and $\pi \colon W \to V$ a $k$-linear retraction of a $G$-equivariant
-  inclusion $i \colon V \hookrightarrow W$.  The averaged map
+  % [ML] CategoryTheory.Simple V for V : FDRep k G means V ≠ 0 and every
+  %   monic into V is iso or zero.  In our setting this is equivalent to:
+  %   V ≠ 0 has no proper non-zero G-invariant subspace.
+  %   Equivalently, IsSimpleModule (MonoidAlgebra k G) (V.ρ.asModule).
+  \uses{def:rep-categories, def:subrep}
+  A finite-dimensional representation $V : \texttt{FDRep k G}$ is
+  \emph{irreducible} (or \emph{simple}) if
+  \texttt{CategoryTheory.Simple V}: $V$ is non-zero and every subrepresentation
+  is either $0$ or $V$ itself. In Lean this is provided as a typeclass
+  \texttt{[CategoryTheory.Simple V]}.
+\end{definition}
+
+\begin{definition}[Inner product on ${k^G}$]
+  \label{def:inner-prod}
+  \lean{ClassFunction.innerProduct}
+  % [NEW] Not packaged in Mathlib as a standalone bilinear form, but the
+  %       defining sum appears explicitly in
+  %       Representation.card_inv_mul_sum_char_mul_char_eq_finrank.
+  \uses{def:standing-hypotheses}
+  For $f, h : G \to k$ define
   \[
-    \bar\pi \;:=\; \frac{1}{|G|} \sum_{g \in G} \rho(g)^{-1} \circ \pi \circ \rho(g)
+    \langle f, h\rangle_G \;:=\; \frac{1}{|G|}\sum_{g \in G} f(g)\, h(g^{-1}).
   \]
-  is a $G$-equivariant retraction of $i$.
+  When $h = \overline{h'}$ is replaced by complex conjugation in the unitary
+  case, this recovers the usual Hermitian inner product. We use the algebraic
+  form throughout, which agrees with Mathlib's character formula
+  \texttt{Representation.card\_inv\_mul\_sum\_char\_mul\_char\_eq\_finrank}.
+\end{definition}
+
+
+\chapter{Maschke's Theorem and Semisimplicity}
+\label{chap:maschke}
+
+The strategy is the standard ``averaging trick'': start from any $k$-linear
+retraction of a $G$-equivariant inclusion, then average over $G$ to get a
+$G$-equivariant retraction. We follow the Mathlib formulation in
+\texttt{Mathlib.RepresentationTheory.Maschke}.
+
+\section{The Conjugate of a Linear Map}
+
+\begin{definition}[Conjugate of a linear map]
+  \label{def:conjugate}
+  \lean{LinearMap.conjugate}
+  \mathlibok
+  % [ML] Mathlib.RepresentationTheory.Maschke:
+  %   LinearMap.conjugate : (W →ₗ[k] V) → G → (W →ₗ[k] V)
+  %   π.conjugate g v = single g⁻¹ 1 • π (single g 1 • v).
+  \uses{def:as-module}
+  Let $V, W$ be $k[G]$-modules and $\pi : W \to V$ a $k$-linear map. For each
+  $g \in G$ define the \emph{conjugate}
+  \[
+    (\pi^g)(v) \;:=\; g^{-1} \cdot \pi(g \cdot v),
+  \]
+  i.e.\ \texttt{π.conjugate g v = (single g⁻¹ 1) \(\bullet\) π((single g 1) \(\bullet\) v)}.
+\end{definition}
+
+\begin{lemma}[Conjugate fixes equivariant inclusions]
+  \label{lem:conjugate-of-i}
+  \lean{LinearMap.conjugate_i}
+  \mathlibok
+  % [ML] Mathlib.RepresentationTheory.Maschke: LinearMap.conjugate_i.
+  \uses{def:conjugate}
+  If $i : V \to W$ is $k[G]$-linear and $\pi \circ i = \mathrm{id}_V$, then
+  for every $g \in G$ also $\pi^g \circ i = \mathrm{id}_V$ (as $k$-linear maps).
 \end{lemma}
 
 \begin{proof}
   \leanok
-  \uses{def:finite-group}
-  This is \texttt{LinearMap.sumOfConjugatesEquivariant} in
-  \texttt{Mathlib.RepresentationTheory.Maschke}.
+  \uses{def:conjugate}
+  By unfolding: $\pi^g(i(v)) = g^{-1}\cdot\pi(g\cdot i(v)) = g^{-1}\cdot\pi(i(g\cdot v))
+  = g^{-1}\cdot(g\cdot v) = v$, where we used $k[G]$-linearity of $i$ and the
+  retraction hypothesis. This is \texttt{LinearMap.conjugate\_i} in Mathlib.
 \end{proof}
 
-\begin{theorem}[Maschke's theorem]
-  \label{thm:maschke}
-  \lean{Representation.isSemisimple}
+\section{The Averaged (Equivariant) Projection}
+
+\begin{definition}[Sum-of-conjugates]
+  \label{def:sum-of-conjugates}
+  \lean{LinearMap.sumOfConjugatesEquivariant}
   \mathlibok
-  % [ML] The submodule complement is constructed in Maschke.lean via the
-  %      equivariant projection.  The semisimplicity conclusion follows.
-  \uses{lem:weyl-avg, def:irreducible, def:direct-sum}
-  Every finite-dimensional representation of a finite group $G$ over a field $k$
-  with $\mathrm{char}(k) \nmid |G|$ is \emph{semisimple}: it decomposes as a
-  direct sum of irreducible subrepresentations.
+  % [ML] Mathlib.RepresentationTheory.Maschke:
+  %   LinearMap.sumOfConjugatesEquivariant G π = ∑ g, π.conjugate g.
+  \uses{def:conjugate}
+  Define $\Sigma\pi := \sum_{g \in G} \pi^g$.  The Mathlib name is
+  \texttt{LinearMap.sumOfConjugatesEquivariant G π}, and the corresponding
+  pointwise formula is \texttt{sumOfConjugatesEquivariant\_apply}.
+\end{definition}
+
+\begin{definition}[Equivariant projection]
+  \label{def:equivariant-projection}
+  \lean{LinearMap.equivariantProjection}
+  \mathlibok
+  % [ML] LinearMap.equivariantProjection G π = (1/|G|) • ∑ g, π.conjugate g.
+  \uses{def:sum-of-conjugates}
+  Set $\bar\pi := |G|^{-1}\,\Sigma\pi$. The Mathlib name is
+  \texttt{LinearMap.equivariantProjection G π} and pointwise
+  \texttt{equivariantProjection\_apply}: $\bar\pi(v) =
+  \frac{1}{|G|}\sum_g \pi^g(v)$.
+\end{definition}
+
+\begin{lemma}[$\bar\pi$ is ${k[G]}$-linear]
+  \label{lem:bar-pi-equivariant}
+  \lean{LinearMap.equivariantProjection}
+  \mathlibok
+  % [ML] The Mathlib definition LinearMap.equivariantProjection bundles
+  %   k[G]-linearity into its type: it returns a (W →ₗ[MonoidAlgebra k G] V).
+  \uses{def:equivariant-projection}
+  The map $\bar\pi : W \to V$ is $k[G]$-linear: it commutes with the action
+  of every group element.
+\end{lemma}
+
+\begin{proof}
+  \leanok
+  \uses{def:equivariant-projection}
+  Bundled into the Mathlib definition: \texttt{LinearMap.equivariantProjection}
+  has codomain \texttt{(W →ₗ[MonoidAlgebra k G] V)}. The proof in Mathlib is by
+  reindexing the sum $\sum_g \pi^g$: conjugating by $h$ permutes the summands
+  ($g \mapsto h^{-1} g$) and the prefactor $|G|^{-1}$ is fixed.
+\end{proof}
+
+\begin{lemma}[$\bar\pi$ retracts $i$]
+  \label{lem:bar-pi-retracts}
+  \lean{LinearMap.equivariantProjection_condition}
+  \mathlibok
+  % [ML] Mathlib.RepresentationTheory.Maschke:
+  %   LinearMap.equivariantProjection_condition.
+  \uses{def:equivariant-projection, lem:conjugate-of-i}
+  If $i : V \to W$ is $k[G]$-linear and $\pi \circ i = \mathrm{id}_V$, then
+  $\bar\pi \circ i = \mathrm{id}_V$.
+\end{lemma}
+
+\begin{proof}
+  \leanok
+  \uses{lem:conjugate-of-i}
+  Compute, for $v \in V$:
+  $\bar\pi(i(v)) = |G|^{-1}\sum_g \pi^g(i(v)) = |G|^{-1}\sum_g v
+  = |G|^{-1}\cdot|G|\cdot v = v$,
+  using Lemma~\ref{lem:conjugate-of-i} for the second equality and the
+  invertibility of $|G|$ for the last. This is
+  \texttt{LinearMap.equivariantProjection\_condition}.
+\end{proof}
+
+\section{Maschke's Theorem}
+
+\begin{theorem}[Maschke: every ${k[G]}$-injection splits]
+  \label{thm:maschke-split}
+  \lean{MonoidAlgebra.exists_leftInverse_of_injective}
+  \mathlibok
+  % [ML] Mathlib.RepresentationTheory.Maschke:
+  %   MonoidAlgebra.exists_leftInverse_of_injective.
+  %   Hypotheses: [Field k] [Group G] [Finite G] [NeZero (Nat.card G : k)].
+  \uses{lem:bar-pi-equivariant, lem:bar-pi-retracts}
+  Let $V, W$ be $k[G]$-modules and $f : V \to W$ a $k[G]$-linear injection.
+  Then $f$ admits a $k[G]$-linear left inverse: there exists
+  $g : W \to V$ in $k[G]\text{-Mod}$ with $g \circ f = \mathrm{id}_V$.
 \end{theorem}
 
 \begin{proof}
-  \uses{lem:weyl-avg}
-  By induction on $\dim V$.  If $V$ is irreducible, done.  Otherwise, pick a
-  proper invariant subspace $W$; apply Lemma~\ref{lem:weyl-avg} to produce a
-  $G$-equivariant complement $W'$, giving $V \cong W \oplus W'$.  Both summands
-  are strictly smaller, so induction applies.
+  \leanok
+  \uses{lem:bar-pi-equivariant, lem:bar-pi-retracts}
+  Choose any $k$-linear retraction $\pi : W \to V$ of $f$ (it exists because
+  $V \to W$ is an injection of $k$-vector spaces). Take
+  $g := \bar\pi$ from Definition~\ref{def:equivariant-projection}; it is
+  $k[G]$-linear (Lemma~\ref{lem:bar-pi-equivariant}) and retracts $f$
+  (Lemma~\ref{lem:bar-pi-retracts}).  This is the proof of
+  \texttt{MonoidAlgebra.exists\_leftInverse\_of\_injective}.
 \end{proof}
 
-\chapter{Schur's Lemma and Its Consequences}
+\begin{theorem}[Maschke: every submodule has a complement]
+  \label{thm:maschke-compl}
+  \lean{MonoidAlgebra.Submodule.exists_isCompl}
+  \mathlibok
+  % [ML] Mathlib.RepresentationTheory.Maschke:
+  %   MonoidAlgebra.Submodule.exists_isCompl.
+  \uses{thm:maschke-split}
+  For any $k[G]$-module $V$ and any $k[G]$-submodule $p \subseteq V$ there is
+  a $k[G]$-submodule $q \subseteq V$ with $V = p \oplus q$ (i.e.\
+  \texttt{IsCompl p q}).
+\end{theorem}
 
-\begin{theorem}[Schur's Lemma]
-  \label{thm:schur}
+\begin{proof}
+  \leanok
+  \uses{thm:maschke-split}
+  Apply Theorem~\ref{thm:maschke-split} to the inclusion
+  $p \hookrightarrow V$ to obtain a $k[G]$-linear retraction
+  $g : V \to p$. Then $q := \ker g$ is a $k[G]$-submodule with $p \oplus q = V$.
+\end{proof}
+
+\begin{theorem}[Maschke: $V$ is semisimple as a ${k[G]}$-module]
+  \label{thm:maschke-semisimple}
+  \lean{MonoidAlgebra.Submodule.instIsSemisimpleModule}
+  \mathlibok
+  % [ML] Mathlib.RepresentationTheory.Maschke registers this as an instance
+  %   IsSemisimpleModule (MonoidAlgebra k G) V.
+  \uses{thm:maschke-compl}
+  For every $k[G]$-module $V$ we have
+  \texttt{IsSemisimpleModule (MonoidAlgebra k G) V}: every submodule has a
+  complement, equivalently, $V$ is a direct sum of simple submodules.
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  \uses{thm:maschke-compl}
+  This is the Mathlib instance \texttt{MonoidAlgebra.Submodule.instIsSemisimpleModule},
+  which packages Theorem~\ref{thm:maschke-compl} into the typeclass
+  \texttt{IsSemisimpleModule}.
+\end{proof}
+
+\begin{corollary}[Every f.d.\ rep is a direct sum of irreducibles]
+  \label{cor:fd-rep-decomposition}
+  \lean{IsSemisimpleModule.exists_directSum_simple}
+  % [~ML] Generic statement available for any IsSemisimpleModule on a
+  %       Noetherian module; for finite-dimensional vector spaces this
+  %       reduces to a finite direct sum.
+  \uses{thm:maschke-semisimple, def:simple}
+  Every $V : \texttt{FDRep k G}$ is isomorphic to a finite direct sum of simple
+  objects of \texttt{FDRep k G}.
+\end{corollary}
+
+\begin{proof}
+  \uses{thm:maschke-semisimple}
+  By Theorem~\ref{thm:maschke-semisimple}, \texttt{V.ρ.asModule} is semisimple.
+  A finitely generated semisimple module is a finite direct sum of simple
+  modules; transporting along the equivalence
+  \texttt{Rep.equivalenceModuleMonoidAlgebra} gives the statement in
+  \texttt{FDRep k G}.
+\end{proof}
+
+
+\chapter{Schur's Lemma and Matrix-Coefficient Orthogonality}
+\label{chap:schur}
+
+\section{Schur's Lemma}
+
+\begin{theorem}[Schur's Lemma — dimension form]
+  \label{thm:schur-dim}
   \lean{FDRep.finrank_hom_simple_simple}
   \mathlibok
-  % [ML] FDRep.finrank_hom_simple_simple in Mathlib.RepresentationTheory.FDRep:
-  %      finrank k (V ⟶ W) = if Nonempty (V ≅ W) then 1 else 0
-  %      for Simple V, Simple W, IsAlgClosed k.
-  %      The categorical version is CategoryTheory.Schur in Mathlib.CategoryTheory.Preadditive.Schur.
-  % CONTRIBUTION POINT: Schur's lemma is already fully verified in Mathlib.
-  % However, contributions can be made by extending it to more general settings,
-  % such as non-algebraically closed fields or infinite groups.
-  \uses{def:intertwining, def:irreducible}
-  Let $\rho$ and $\sigma$ be irreducible finite-dimensional representations of
-  $G$ over an algebraically closed field $k$.  Then
+  % [ML] Mathlib.RepresentationTheory.FDRep:
+  %   FDRep.finrank_hom_simple_simple :
+  %     finrank k (V ⟶ W) = if Nonempty (V ≅ W) then 1 else 0,
+  %   for V W : FDRep k G with [Simple V] [Simple W] [IsAlgClosed k].
+  \uses{def:simple, def:intertwiner}
+  Let $V, W : \texttt{FDRep k G}$ both be simple. Then
   \[
-    \dim_k \mathrm{Hom}_G(\rho, \sigma)
-    \;=\;
-    \begin{cases} 1 & \text{if } \rho \cong \sigma, \\ 0 & \text{otherwise.} \end{cases}
+    \dim_k(V \to W)_G \;=\;
+    \begin{cases} 1 & \text{if } V \cong W,\\ 0 & \text{otherwise.} \end{cases}
   \]
-  In particular, any $G$-map between non-isomorphic irreducibles is zero, and
-  any $G$-endomorphism of an irreducible is a scalar.
 \end{theorem}
 
 \begin{proof}
   \leanok
-  \uses{def:intertwining, def:irreducible}
-  This is \texttt{FDRep.finrank\_hom\_simple\_simple} in Mathlib.
-  The key step: any nonzero $G$-map $T \colon V \to W$ has trivial kernel
-  (invariant subspace of irreducible $V$) and hence is injective, and similarly
-  surjective onto $W$; for endomorphisms, any eigenspace is invariant.
+  \uses{def:simple, def:intertwiner}
+  This is \texttt{FDRep.finrank\_hom\_simple\_simple}.  The proof packaged in
+  Mathlib uses the more general \texttt{CategoryTheory.Schur} for an abelian
+  $k$-linear category with simple objects and $k$ algebraically closed:
+  any nonzero morphism $T : V \to W$ between simples has zero kernel and
+  zero cokernel by simplicity of $V, W$, hence is an iso; for endomorphisms
+  $T : V \to V$, since $k$ is algebraically closed $T$ has an eigenvalue
+  $\lambda$, and $T - \lambda \mathrm{id}$ is a non-iso endomorphism of a simple
+  object, hence zero.
 \end{proof}
 
-\begin{corollary}[Non-isomorphic irreducibles have orthogonal matrix coefficients]
-  \label{cor:schur-ortho}
-  \lean{FDRep.scalar_product_char_eq_finrank_equivariant}
-  \mathlibok
-  % [ML] scalar_product_char_eq_finrank_equivariant relates the character
-  %      inner product to dim Hom; combined with Schur this gives orthogonality.
-  \uses{thm:schur, def:irreducible}
-  Let $\rho$ and $\sigma$ be irreducible representations and let $A$ be any
-  linear map $V_\rho \to V_\rho$.  The averaged operator
-  $\int_G \rho(g) A \rho(g)^{-1}$ equals $\frac{\mathrm{tr}(A)}{\dim V_\rho} \cdot \mathrm{id}$.
-  In particular, for $f \in k^G$,
-  \[
-    \frac{1}{|G|}\sum_{g \in G} \rho(g)_{ij}\,\overline{\sigma(g)_{kl}}
-    \;=\;
-    \frac{\delta_{\rho\sigma}\,\delta_{ik}\,\delta_{jl}}{\dim V_\rho}.
-  \]
+\begin{corollary}[Schur scalar form]
+  \label{cor:schur-scalar}
+  \lean{CategoryTheory.endRingEquiv}
+  % [~ML] CategoryTheory.endRingEquiv (or End_simple_isAlgEquiv) gives
+  %       End V ≃+* k for V : FDRep k G simple, under [IsAlgClosed k].
+  %       Direct corollary of Theorem~\ref{thm:schur-dim} with V = W.
+  \uses{thm:schur-dim}
+  For $V : \texttt{FDRep k G}$ simple, every $G$-equivariant endomorphism of
+  $V$ is a scalar multiple of $\mathrm{id}_V$. The ring $\mathrm{End}_G(V)$ is
+  isomorphic to $k$.
 \end{corollary}
 
 \begin{proof}
-  \uses{thm:schur}
-  The averaging map $A \mapsto |G|^{-1}\sum_g \rho(g) A \rho(g)^{-1}$ is
-  $G$-equivariant; by Theorem~\ref{thm:schur} it must be a scalar multiple of
-  the identity.  Taking traces determines the scalar.  For two non-isomorphic
-  irreducibles, Schur forces the whole expression to vanish.
+  \uses{thm:schur-dim}
+  By Theorem~\ref{thm:schur-dim} with $V = W$,
+  $\dim_k \mathrm{End}_G V = 1$. Since $\mathrm{id}_V \in \mathrm{End}_G V$ is
+  nonzero, it spans, so every endomorphism is a scalar.
 \end{proof}
 
-\begin{corollary}[Averaging formula]
-  \label{cor:avg-formula}
-  \lean{FDRep.average_char_eq_finrank_invariants}
-  \mathlibok
-  % [ML] FDRep.average_char_eq_finrank_invariants
-  \uses{thm:schur, def:fd-rep}
-  For any finite-dimensional representation $\rho$ of $G$,
+\section{The Symmetrisation \texorpdfstring{$A \mapsto |G|^{-1}\sum_g \rho(g) A \rho(g)^{-1}$}{A -> |G|\^{}-1 sum rho(g) A rho(g)\^{}-1}}
+
+The following few lemmas isolate the averaging argument used in the
+matrix-coefficient orthogonality calculation. They are entirely elementary
+and do not yet appear as standalone Mathlib declarations.
+
+\begin{definition}[$G$-symmetrisation of a linear map]
+  \label{def:symmetrisation}
+  \lean{Representation.symmetrise}
+  % [NEW] Not in Mathlib in this form.  The construction is
+  %   ρ.symmetrise σ A := |G|⁻¹ • ∑ g, σ g ∘ A ∘ ρ g⁻¹.
+  \uses{def:representation, def:standing-hypotheses}
+  Given $\rho : \mathrm{Representation}\ k\ G\ V$,
+  $\sigma : \mathrm{Representation}\ k\ G\ W$ and a $k$-linear $A : V \to W$,
+  define
   \[
-    \frac{1}{|G|} \sum_{g \in G} \chi_\rho(g)
-    \;=\;
-    \dim_k V^G,
+    \mathrm{Sym}_{\rho,\sigma}(A) \;:=\; \frac{1}{|G|}\sum_{g \in G}
+        \sigma(g)\, A\, \rho(g)^{-1} \;\in\; (V \to_{\!\ell[k]} W).
   \]
-  where $V^G = \{v \in V : \rho(g)v = v\ \forall g\}$ is the space of
-  $G$-invariants.
-\end{corollary}
+\end{definition}
+
+\begin{lemma}[Symmetrisation lands in equivariant maps]
+  \label{lem:symmetrise-equivariant}
+  \lean{Representation.symmetrise_equivariant}
+  % [NEW]
+  \uses{def:symmetrisation, def:intertwiner}
+  $\mathrm{Sym}_{\rho,\sigma}(A)$ is $G$-equivariant: it intertwines $\rho$ and
+  $\sigma$.
+\end{lemma}
 
 \begin{proof}
-  \leanok
-  \uses{thm:schur}
-  This is \texttt{FDRep.average\_char\_eq\_finrank\_invariants} in Mathlib.
+  \uses{def:symmetrisation}
+  Compute, for $h \in G$:
+  \begin{align*}
+    \sigma(h)\,\mathrm{Sym}(A) &= \tfrac{1}{|G|}\textstyle\sum_g \sigma(h)\sigma(g) A \rho(g)^{-1}
+       = \tfrac{1}{|G|}\textstyle\sum_g \sigma(hg) A \rho(g)^{-1} \\
+    &= \tfrac{1}{|G|}\textstyle\sum_{g'} \sigma(g') A \rho(h^{-1}g')^{-1}
+       \quad (g' := hg) \\
+    &= \tfrac{1}{|G|}\textstyle\sum_{g'} \sigma(g') A \rho(g')^{-1}\rho(h)
+       = \mathrm{Sym}(A)\,\rho(h).
+  \end{align*}
 \end{proof}
 
-\chapter{Characters and Orthogonality}
+\begin{lemma}[Symmetrisation between non-isomorphic simples is zero]
+  \label{lem:symmetrise-nonzero-implies-iso}
+  \lean{Representation.symmetrise_eq_zero_of_not_iso}
+  % [NEW]
+  \uses{lem:symmetrise-equivariant, thm:schur-dim, def:simple}
+  If $V, W : \texttt{FDRep k G}$ are simple and not isomorphic, then
+  $\mathrm{Sym}_{V.\rho, W.\rho}(A) = 0$ for every $k$-linear $A : V \to W$.
+\end{lemma}
+
+\begin{proof}
+  \uses{lem:symmetrise-equivariant, thm:schur-dim}
+  By Lemma~\ref{lem:symmetrise-equivariant}, $\mathrm{Sym}(A)$ is an
+  intertwiner $V \to W$. By Theorem~\ref{thm:schur-dim}, the space of such
+  intertwiners has dimension $0$ since $V \not\cong W$, hence
+  $\mathrm{Sym}(A) = 0$.
+\end{proof}
+
+\begin{lemma}[Symmetrisation on a single simple is a scalar]
+  \label{lem:symmetrise-self-scalar}
+  \lean{Representation.symmetrise_self_eq_smul_id}
+  % [NEW]
+  \uses{lem:symmetrise-equivariant, cor:schur-scalar, def:simple}
+  Let $V : \texttt{FDRep k G}$ be simple. For every $A : V \to V$ ($k$-linear),
+  there is a unique scalar $c(A) \in k$ such that
+  $\mathrm{Sym}_{V.\rho,V.\rho}(A) = c(A)\,\mathrm{id}_V$.  Furthermore
+  \[
+    c(A) \;=\; \frac{\mathrm{tr}(A)}{\dim_k V}.
+  \]
+\end{lemma}
+
+\begin{proof}
+  \uses{cor:schur-scalar, lem:symmetrise-equivariant}
+  By Lemma~\ref{lem:symmetrise-equivariant} the symmetrisation is in
+  $\mathrm{End}_G V$, which by Corollary~\ref{cor:schur-scalar} is one-dimensional
+  spanned by $\mathrm{id}_V$. Hence $\mathrm{Sym}(A) = c(A)\mathrm{id}_V$ for some
+  $c(A) \in k$. Take the $k$-trace of both sides: the left side has trace
+  $\frac{1}{|G|}\sum_g \mathrm{tr}(\rho(g) A \rho(g)^{-1}) = \mathrm{tr}(A)$
+  (cyclicity of trace), and the right side has trace $c(A)\,\dim_k V$.
+  So $c(A) = \mathrm{tr}(A)/\dim_k V$.
+\end{proof}
+
+\section{Matrix-Coefficient Orthogonality (Schur II)}
+
+\begin{theorem}[Matrix-coefficient orthogonality, single irrep]
+  \label{thm:matrix-coeff-ortho-self}
+  \lean{Representation.matrix_coeff_orthogonality_self}
+  % [NEW] Standard consequence of Lemma~\ref{lem:symmetrise-self-scalar};
+  %       not packaged in Mathlib.
+  \uses{lem:symmetrise-self-scalar, def:simple}
+  Let $V : \texttt{FDRep k G}$ be simple of dimension $d := \dim_k V$, and let
+  $\{e_1, \ldots, e_d\}$ be a $k$-basis of $V$. Write $\rho_{ij}(g)$ for the
+  $(i,j)$-th matrix coefficient of $V.\rho(g)$ in this basis. Then
+  \[
+    \frac{1}{|G|}\sum_{g \in G} \rho_{ij}(g)\, \rho_{kl}(g^{-1})
+    \;=\; \frac{\delta_{il}\,\delta_{jk}}{d}.
+  \]
+\end{theorem}
+
+\begin{proof}
+  \uses{lem:symmetrise-self-scalar}
+  Apply Lemma~\ref{lem:symmetrise-self-scalar} to the rank-one $k$-linear map
+  $A := E_{lj}$ (the matrix unit sending $e_j$ to $e_l$, all other basis
+  vectors to $0$). Then $\mathrm{tr}(A) = \delta_{lj}$, so
+  $c(A) = \delta_{lj}/d$, and reading off the $(i,k)$-th matrix entry of
+  $\mathrm{Sym}(A) = c(A)\mathrm{id}_V$ on both sides gives
+  $\frac{1}{|G|}\sum_g \rho_{ij}(g)\rho_{kl}(g^{-1}) = \delta_{lj}\delta_{ik}/d$.
+\end{proof}
+
+\begin{theorem}[Matrix-coefficient orthogonality, distinct irreps]
+  \label{thm:matrix-coeff-ortho-distinct}
+  \lean{Representation.matrix_coeff_orthogonality_distinct}
+  % [NEW] Counterpart of \ref{thm:matrix-coeff-ortho-self} for V ≠ W.
+  \uses{lem:symmetrise-nonzero-implies-iso, def:simple}
+  Let $V, W : \texttt{FDRep k G}$ be simple with $V \not\cong W$, and choose
+  bases of $V$ and $W$. Then for all matrix indices,
+  \[
+    \frac{1}{|G|}\sum_{g \in G} \rho_{ij}(g)\, \sigma_{kl}(g^{-1}) \;=\; 0,
+  \]
+  where $\rho = V.\rho$ and $\sigma = W.\rho$.
+\end{theorem}
+
+\begin{proof}
+  \uses{lem:symmetrise-nonzero-implies-iso}
+  Apply Lemma~\ref{lem:symmetrise-nonzero-implies-iso} to any rank-one
+  $A : V \to W$ and read off the result in coordinates.
+\end{proof}
+
+
+\chapter{Characters and Their Orthogonality}
+\label{chap:characters}
 
 \section{Characters}
 
-\begin{definition}[Character]
+\begin{definition}[Character of a representation]
   \label{def:character}
-  \lean{FDRep.character, Representation.character}
+  \lean{FDRep.character}
   \mathlibok
-  % [ML] FDRep.character and Representation.character in
-  %      Mathlib.RepresentationTheory.Character
-  \uses{def:fd-rep}
-  The \emph{character} of a finite-dimensional representation
-  $\rho \colon G \to \mathrm{GL}(V)$ is the function
-  $\chi_\rho \colon G \to k$, $\quad g \mapsto \mathrm{tr}_V(\rho(g))$.
-
-  Basic properties already in Mathlib:
-  \begin{itemize}
-    \item \texttt{FDRep.char\_iso}: isomorphic reps have equal characters.
-    \item \texttt{FDRep.char\_conj}: $\chi_\rho(hgh^{-1}) = \chi_\rho(g)$
-          (characters are class functions).
-    \item \texttt{FDRep.char\_one}: $\chi_\rho(1) = \dim_k V$.
-    \item \texttt{FDRep.char\_tensor}: $\chi_{\rho \otimes \sigma} = \chi_\rho \cdot \chi_\sigma$.
-    \item \texttt{FDRep.char\_dual}: $\chi_{\rho^\vee}(g) = \chi_\rho(g^{-1})$.
-  \end{itemize}
+  % [ML] Mathlib.RepresentationTheory.Character:
+  %   FDRep.character V g = LinearMap.trace k V (V.ρ g).
+  \uses{def:rep-categories}
+  The \emph{character} of $V : \texttt{FDRep k G}$ is the function
+  $\chi_V : G \to k$, $g \mapsto \mathrm{tr}_V(V.\rho(g))$.
 \end{definition}
 
-\begin{definition}[Inner product of class functions]
-  \label{def:class-fn-inner-product}
-  \lean{classFunctionInnerProduct}
-  % [NEW] The inner product \langle f, h \rangle = |G|^{-1} \sum_g f(g) h(g^{-1})
-  %       is not defined as a standalone object in Mathlib, though the
-  %       scalar product of characters is computed in Character.lean.
-  \uses{def:character, def:finite-group}
-  The \emph{inner product of class functions} $f, h \colon G \to k$ is
-  \[
-    \langle f, h \rangle_G
-    \;:=\;
-    \frac{1}{|G|} \sum_{g \in G} f(g)\, h(g^{-1}).
-  \]
-\end{definition}
-
-\section{Orthogonality of Characters}
-
-\begin{theorem}[Schur orthogonality of characters]
-  \label{thm:char-ortho}
-  \lean{FDRep.char_orthonormal, Representation.char_orthonormal}
+\begin{lemma}[$\chi_V(1) = \dim V$]
+  \label{lem:char-one}
+  \lean{FDRep.char_one}
   \mathlibok
-  % [ML] FULLY in Mathlib:
-  %   FDRep.char_orthonormal  (categorical version)
-  %   Representation.char_orthonormal  (explicit version)
-  %   Both in Mathlib.RepresentationTheory.Character.
-  %   Hypotheses: IsAlgClosed k, Fintype G, Invertible (Fintype.card G : k),
-  %               Simple V, Simple W (i.e. irreducible).
-  % CONTRIBUTION POINT: While character orthogonality is verified in Mathlib,
-  % the orthogonality of irreducible representations under the Hilbert-Schmidt
-  % inner product (matrix coefficient orthogonality) can be further developed.
-  % Contributors can formalize the Hilbert-Schmidt inner product on representation
-  % spaces and prove orthogonality relations for matrix coefficients.
-  \uses{def:character, def:class-fn-inner-product, thm:schur, def:irreducible}
-  Let $G$ be a finite group, $k$ an algebraically closed field with
-  $\mathrm{char}(k) \nmid |G|$.  For irreducible representations
-  $\rho, \sigma$ of $G$,
+  % [ML] FDRep.char_one : V.character 1 = finrank k V.
+  \uses{def:character}
+  $\chi_V(1) = \dim_k V$.
+\end{lemma}
+
+\begin{proof}
+  \leanok
+  \uses{def:character}
+  $\chi_V(1) = \mathrm{tr}(V.\rho(1)) = \mathrm{tr}(\mathrm{id}_V) = \dim_k V$.
+  This is \texttt{FDRep.char\_one}.
+\end{proof}
+
+\begin{lemma}[Characters are class functions]
+  \label{lem:char-conj}
+  \lean{FDRep.char_conj}
+  \mathlibok
+  % [ML] FDRep.char_conj : V.character (h * g * h⁻¹) = V.character g.
+  \uses{def:character}
+  $\chi_V(hgh^{-1}) = \chi_V(g)$ for all $g, h \in G$.
+\end{lemma}
+
+\begin{proof}
+  \leanok
+  \uses{def:character}
+  Cyclicity of trace: $\mathrm{tr}(\rho(h)\rho(g)\rho(h)^{-1}) = \mathrm{tr}(\rho(g))$.
+  Mathlib: \texttt{FDRep.char\_conj}.
+\end{proof}
+
+\begin{lemma}[Characters are isomorphism invariants]
+  \label{lem:char-iso}
+  \lean{FDRep.char_iso}
+  \mathlibok
+  % [ML] FDRep.char_iso : (V ≅ W) → V.character = W.character.
+  \uses{def:character, def:rep-iso}
+  If $V \cong W$ in \texttt{FDRep k G} then $\chi_V = \chi_W$.
+\end{lemma}
+
+\begin{proof}
+  \leanok
+  \uses{def:character}
+  An isomorphism conjugates one action into the other; trace is conjugation-invariant.
+  Mathlib: \texttt{FDRep.char\_iso}.
+\end{proof}
+
+\section{The Averaging Formula and Character Orthonormality}
+
+\begin{theorem}[Average of $\chi_V$ counts invariants]
+  \label{thm:avg-char-eq-invariants}
+  \lean{FDRep.average_char_eq_finrank_invariants}
+  \mathlibok
+  % [ML] FDRep.average_char_eq_finrank_invariants:
+  %   ⅟|G| • ∑ g, V.character g = finrank k (Representation.invariants V.ρ).
+  \uses{def:character, def:subrep}
+  For $V : \texttt{FDRep k G}$,
   \[
-    \langle \chi_\rho, \chi_\sigma \rangle_G
-    \;=\;
-    \begin{cases} 1 & \text{if } \rho \cong \sigma, \\ 0 & \text{otherwise.} \end{cases}
+    \frac{1}{|G|}\sum_{g \in G} \chi_V(g) \;=\; \dim_k V^G.
   \]
 \end{theorem}
 
 \begin{proof}
   \leanok
-  \uses{thm:schur, cor:avg-formula}
-  This is \texttt{FDRep.char\_orthonormal} in
-  \texttt{Mathlib.RepresentationTheory.Character}.
-  The proof combines Corollary~\ref{cor:schur-ortho} (matrix coefficient
-  orthogonality) with the fact that $\chi_\rho = \sum_{i} \rho_{ii}$, and sums
-  over matrix indices.
+  \uses{def:character, def:subrep}
+  This is \texttt{FDRep.average\_char\_eq\_finrank\_invariants}.
+  The standard proof: the operator $P := \frac{1}{|G|}\sum_g \rho(g)$ is a
+  $G$-equivariant idempotent ($P^2 = P$, since left-translation by $h$
+  permutes the summands and the prefactor is invariant) whose image is exactly
+  $V^G$. The trace of an idempotent endomorphism of a finite-dimensional
+  vector space is the dimension of its image, giving
+  $\frac{1}{|G|}\sum_g\chi_V(g) = \mathrm{tr}(P) = \dim V^G$.
 \end{proof}
 
-\begin{corollary}[Scalar product equals dimension of Hom-space]
-  \label{cor:inner-prod-hom}
-  \lean{FDRep.scalar_product_char_eq_finrank_equivariant,
-        Representation.card_inv_mul_sum_char_mul_char_eq_finrank}
+\begin{theorem}[Hom-space dimension via characters]
+  \label{thm:hom-space-dim-via-char}
+  \lean{Representation.card_inv_mul_sum_char_mul_char_eq_finrank}
   \mathlibok
-  % [ML] Both versions in Mathlib.RepresentationTheory.Character.
-  \uses{def:character, def:class-fn-inner-product, def:intertwining}
-  For any two finite-dimensional representations $\rho, \sigma$ of $G$,
+  % [ML] Representation.card_inv_mul_sum_char_mul_char_eq_finrank:
+  %   ⅟|G| • ∑ g, V.character g * W.character g⁻¹ = finrank k (V ⟶ W).
+  \uses{thm:avg-char-eq-invariants, def:character, def:intertwiner}
+  For $V, W : \texttt{FDRep k G}$,
   \[
-    \langle \chi_\rho, \chi_\sigma \rangle_G
-    \;=\;
-    \dim_k \mathrm{Hom}_G(\rho, \sigma).
+    \frac{1}{|G|}\sum_{g \in G} \chi_V(g)\, \chi_W(g^{-1})
+    \;=\; \dim_k(V \to W)_G.
   \]
-\end{corollary}
+\end{theorem}
 
 \begin{proof}
   \leanok
-  \uses{thm:schur}
-  This is
-  \texttt{Representation.card\_inv\_mul\_sum\_char\_mul\_char\_eq\_finrank}
-  (or its \texttt{FDRep} counterpart) in Mathlib.
+  \uses{thm:avg-char-eq-invariants}
+  Apply Theorem~\ref{thm:avg-char-eq-invariants} to the representation
+  $\mathrm{Hom}_k(V, W)$ with $G$-action $g \cdot T := \rho_W(g)\, T\, \rho_V(g)^{-1}$.
+  Its character at $g$ equals $\chi_V(g^{-1})\chi_W(g)$, and its
+  $G$-invariants are exactly $(V \to W)_G$. Mathlib:
+  \texttt{Representation.card\_inv\_mul\_sum\_char\_mul\_char\_eq\_finrank}.
 \end{proof}
 
-\chapter{The Peter–Weyl Theorem for Finite Groups}
+\begin{theorem}[First Schur orthogonality of characters]
+  \label{thm:char-ortho}
+  \lean{FDRep.char_orthonormal}
+  \mathlibok
+  % [ML] FDRep.char_orthonormal:
+  %   ⅟|G| • ∑ g, V.character g * W.character g⁻¹
+  %     = if Nonempty (V ≅ W) then 1 else 0,
+  %   for V W : FDRep k G simple, [IsAlgClosed k].
+  \uses{thm:hom-space-dim-via-char, thm:schur-dim}
+  Let $V, W : \texttt{FDRep k G}$ both be simple. Then
+  \[
+    \langle \chi_V, \chi_W \rangle_G \;=\;
+    \begin{cases} 1 & \text{if } V \cong W,\\ 0 & \text{otherwise.}\end{cases}
+  \]
+\end{theorem}
 
-\section{Isotypic Decomposition}
+\begin{proof}
+  \leanok
+  \uses{thm:hom-space-dim-via-char, thm:schur-dim}
+  Combine Theorems \ref{thm:hom-space-dim-via-char} and \ref{thm:schur-dim}:
+  the left-hand side equals $\dim_k(V \to W)_G$ which equals $1$ or $0$
+  depending on whether $V \cong W$. Mathlib: \texttt{FDRep.char\_orthonormal}.
+\end{proof}
 
-\begin{definition}[Unitary dual / irrep index set]
-  \label{def:irr-set}
-  \lean{FDRep.SimpleIrreps}
-  % [NEW] The set of isomorphism classes of irreducibles is not yet packaged
-  %       as a standalone type in Mathlib; needs local definition.
-  \uses{def:irreducible, def:rep-iso}
-  We denote by $\hat G$ a set of representatives of isomorphism classes of
-  irreducible finite-dimensional $k$-representations of $G$.  For each
-  $\xi \in \hat G$, let $V_\xi$ denote the underlying vector space and
+
+\chapter{Isotypic Decomposition}
+\label{chap:isotypic}
+
+\section{The Indexing Set $\hat G$}
+
+\begin{definition}[Set of irreducible classes]
+  \label{def:Ghat}
+  \lean{FDRep.IrreducibleClass}
+  % [NEW] Mathlib does not currently package the set of isomorphism classes
+  %       of finite-dimensional simple representations as a standalone type.
+  %       For finite groups this set is finite (Theorem~\ref{thm:Ghat-finite}).
+  \uses{def:simple, def:rep-iso}
+  Let $\hat G$ denote the set of isomorphism classes of simple objects of
+  \texttt{FDRep k G}. For $\xi \in \hat G$ we choose a representative
+  $V_\xi : \texttt{FDRep k G}$ with $\xi = [V_\xi]$ and write
   $d_\xi := \dim_k V_\xi$.
 \end{definition}
 
+\begin{theorem}[Finiteness of $\hat G$]
+  \label{thm:Ghat-finite}
+  \lean{FDRep.IrreducibleClass.fintype}
+  % [NEW] Follows from the regular representation being finite-dimensional
+  %       and decomposing into all irreps; concretely a consequence of the
+  %       Peter–Weyl theorem (Theorem~\ref{thm:peter-weyl}). Can also be
+  %       proved directly from $|\hat G| \le \dim k[G] = |G|$.
+  \uses{def:Ghat}
+  $\hat G$ is finite, with $|\hat G| \le |G|$. (We will see in
+  Theorem~\ref{thm:char-basis} that in fact $|\hat G|$ equals the number of
+  conjugacy classes of $G$.)
+\end{theorem}
+
+\begin{proof}
+  \uses{thm:peter-weyl, def:Ghat}
+  Every simple object embeds into the regular representation $k[G]$ (a
+  consequence of Peter–Weyl: see Theorem~\ref{thm:peter-weyl} and the remark
+  there that every irrep appears in $k[G]$ with multiplicity $d_\xi \ge 1$),
+  and $k[G]$ is $|G|$-dimensional, so $|\hat G| \le |G|$.
+\end{proof}
+
+\section{Isotypic Components}
+
 \begin{definition}[Isotypic component]
-  \label{def:isotypic}
-  \lean{isotypicComponent}
-  % [NEW] Not in Mathlib; needs local definition.
-  \uses{def:fd-rep, def:irreducible, def:irr-set}
-  For $\xi \in \hat G$ and a representation $\rho$ on $V$, the
-  \emph{$\xi$-isotypic component} $V_{\!(\xi)}$ is the sum of all
-  subrepresentations of $V$ isomorphic to $\rho_\xi$.
+  \label{def:isotypic-component}
+  \lean{Representation.isotypicComponent}
+  % [NEW] Not in Mathlib.
+  \uses{def:Ghat, def:subrep}
+  For $\rho$ a representation on $V$ and $\xi \in \hat G$, the
+  \emph{$\xi$-isotypic component} of $V$ is
+  \[
+    V_{(\xi)} \;:=\; \sum \big\{\, W \subseteq V : W\ \text{is a $G$-subspace
+    isomorphic to } V_\xi\,\big\},
+  \]
+  the sum being taken inside $V$. It is itself a $G$-subrepresentation.
 \end{definition}
 
-\begin{proposition}[Isotypic components are pairwise orthogonal]
-  \label{prop:isotypic-ortho}
-  \lean{isotypicComponent_orthogonal}
-  % [NEW] Follows from char_orthonormal + Maschke, but not packaged in Mathlib.
-  \uses{def:isotypic, thm:schur, cor:irr-iso-orthogonal}
-  For $\xi \neq \xi'$ in $\hat G$, any subrepresentation isomorphic to
-  $\rho_\xi$ is orthogonal (in the Hom sense: no nonzero equivariant maps) to
-  any subrepresentation isomorphic to $\rho_{\xi'}$.
-\end{proposition}
+\begin{lemma}[Isotypic components are pairwise disjoint as subspaces]
+  \label{lem:isotypic-disjoint}
+  \lean{Representation.isotypicComponent_disjoint}
+  % [NEW]
+  \uses{def:isotypic-component, thm:schur-dim}
+  For $\xi \ne \xi'$ in $\hat G$, $V_{(\xi)} \cap V_{(\xi')} = 0$ inside $V$.
+\end{lemma}
 
 \begin{proof}
-  \uses{thm:schur}
-  Immediate from Theorem~\ref{thm:schur}: a nonzero equivariant map between
-  non-isomorphic irreducibles cannot exist.
+  \uses{thm:schur-dim, def:isotypic-component, thm:maschke-semisimple}
+  Write $W := V_{(\xi)} \cap V_{(\xi')}$, a $G$-subrepresentation of $V$.
+  By Maschke (Theorem~\ref{thm:maschke-semisimple}) $W$ is semisimple,
+  i.e.\ a direct sum of simples. Each simple summand sits in both
+  $V_{(\xi)}$ and $V_{(\xi')}$, so by the definition of isotypic component
+  is isomorphic to both $V_\xi$ and $V_{\xi'}$, contradicting $\xi \ne \xi'$.
+  Hence there are no simple summands and $W = 0$.
 \end{proof}
 
-\begin{corollary}[Non-isomorphic irreducible subrepresentations are linearly disjoint]
-  \label{cor:irr-iso-orthogonal}
-  \lean{subrep_noniso_orthogonal}
-  % [NEW] Direct consequence of Schur; needs local statement.
-  \uses{thm:schur}
-  If $W_1, W_2 \subseteq V$ are irreducible subrepresentations with
-  $\rho\!\restriction_{W_1} \not\cong \rho\!\restriction_{W_2}$, then
-  $W_1 \cap W_2 = 0$.
-\end{corollary}
+\begin{lemma}[Multiplicity space]
+  \label{lem:multiplicity-space}
+  \lean{Representation.multiplicitySpace}
+  % [NEW]
+  \uses{def:isotypic-component, thm:schur-dim, def:simple}
+  For $V : \texttt{FDRep k G}$ and $\xi \in \hat G$, define
+  $M_\xi := (V_\xi \to V)_G$ (the $k$-vector space of $G$-equivariant maps
+  $V_\xi \to V$). Then $\dim_k M_\xi$ is the \emph{multiplicity} $m_\xi$ of
+  $V_\xi$ in $V$, and there is a canonical $G$-equivariant isomorphism
+  \[
+    \mathrm{ev}_\xi : V_\xi \otimes_k M_\xi \xrightarrow{\ \sim\ } V_{(\xi)},
+    \qquad v \otimes \phi \longmapsto \phi(v).
+  \]
+  In particular $V_{(\xi)} \cong V_\xi^{\oplus m_\xi}$ and
+  $\dim_k V_{(\xi)} = m_\xi \cdot d_\xi$.
+\end{lemma}
 
 \begin{proof}
-  \uses{thm:schur}
-  Apply Schur's Lemma to the inclusion $W_1 \hookrightarrow V$ followed by
-  projection onto $W_2$.  Since the representations are non-isomorphic the
-  composite is zero, so $W_1 \cap W_2 = 0$.
+  \uses{thm:schur-dim, thm:maschke-semisimple, def:isotypic-component}
+  Equivariance of $\mathrm{ev}_\xi$ is direct.  Surjectivity: by
+  Theorem~\ref{thm:maschke-semisimple}, $V_{(\xi)}$ is a finite direct sum
+  $\bigoplus_{\alpha} W_\alpha$ of simples isomorphic to $V_\xi$; pick
+  isomorphisms $\phi_\alpha : V_\xi \to W_\alpha \subseteq V$, then any
+  $w \in V_{(\xi)}$ writes as $\sum_\alpha \phi_\alpha(v_\alpha) =
+  \mathrm{ev}_\xi\big(\sum_\alpha v_\alpha \otimes \phi_\alpha\big)$.
+  Injectivity: an element of $V_\xi \otimes M_\xi$ in the kernel decomposes
+  as $\sum v_\alpha \otimes \phi_\alpha$ for $\phi_\alpha$ a basis of
+  $M_\xi$; the requirement $\sum \phi_\alpha(v_\alpha) = 0$ together with
+  Theorem~\ref{thm:schur-dim} (which says the $\phi_\alpha$ have linearly
+  independent images among simples) forces every $v_\alpha = 0$.
+  The dimension count follows.
 \end{proof}
-
-\begin{proposition}[Structure of isotypic component]
-  \label{prop:isotypic-structure}
-  \lean{isotypicComponent_iso_power}
-  % [NEW] Not in Mathlib.
-  \uses{def:isotypic, thm:schur, thm:maschke}
-  For $\xi \in \hat G$, the isotypic component $V_{\!(\xi)}$ satisfies:
-  \begin{enumerate}
-    \item $V_{\!(\xi)} \cong \rho_\xi^{\oplus m_\xi}$ for a uniquely determined
-          non-negative integer $m_\xi$ (the \emph{multiplicity} of $\rho_\xi$ in $\rho$).
-    \item $\dim_k V_{\!(\xi)} = m_\xi \cdot d_\xi$.
-  \end{enumerate}
-\end{proposition}
-
-\begin{proof}
-  \uses{thm:schur, thm:maschke}
-  By Maschke (Theorem~\ref{thm:maschke}), $V_{\!(\xi)}$ is semisimple; all its
-  irreducible summands are isomorphic to $\rho_\xi$ by definition.  Schur's
-  Lemma forces $\dim \mathrm{Hom}_G(V_{\!(\xi)}, \rho_\xi) = m_\xi$, uniquely
-  determining the multiplicity.
-\end{proof}
-
-\section{The Peter–Weyl / Isotypic Decomposition Theorem}
 
 \begin{theorem}[Isotypic decomposition]
-  \label{thm:isotypic-decomp}
-  \lean{isotypicDecomposition}
-  % [NEW] The full packaged theorem is not yet in Mathlib.
-  \uses{def:isotypic, prop:isotypic-ortho, prop:isotypic-structure, thm:maschke}
-  Every finite-dimensional representation $\rho$ of $G$ decomposes as
+  \label{thm:isotypic-decomposition}
+  \lean{Representation.isotypicDecomposition}
+  % [NEW]
+  \uses{lem:isotypic-disjoint, lem:multiplicity-space, thm:maschke-semisimple}
+  For every $V : \texttt{FDRep k G}$, the inclusions $V_{(\xi)} \hookrightarrow V$
+  assemble into a $G$-equivariant isomorphism
   \[
-    V \;\cong\; \bigoplus_{\xi \in \hat G} V_{\!(\xi)}
-    \;\cong\; \bigoplus_{\xi \in \hat G} \rho_\xi^{\oplus m_\xi},
+    \bigoplus_{\xi \in \hat G} V_{(\xi)} \xrightarrow{\ \sim\ } V,
   \]
-  and this decomposition is unique (the multiplicities $m_\xi$ are uniquely
-  determined).
-\end{theorem}
-
-\begin{proof}
-  \uses{thm:maschke, prop:isotypic-ortho, prop:isotypic-structure}
-  By Theorem~\ref{thm:maschke}, $V$ is a direct sum of irreducibles.
-  Group the summands by isomorphism class.  The components corresponding to
-  different classes are linearly independent by
-  Corollary~\ref{cor:irr-iso-orthogonal}, and together they span $V$, giving
-  the direct sum decomposition.  Uniqueness of $m_\xi$ follows from
-  Corollary~\ref{cor:inner-prod-hom}: $m_\xi = \langle \chi_\rho, \chi_{\rho_\xi} \rangle_G$.
-\end{proof}
-
-\begin{theorem}[Peter–Weyl theorem for finite groups]
-  \label{thm:peter-weyl-finite}
-  \lean{PeterWeyl.finite}
-  % [NEW] Not yet stated in this form in Mathlib.
-  % CONTRIBUTION POINT: This is a key area for contribution. The Peter-Weyl theorem
-  % for finite groups is not yet fully formalized in Mathlib. Contributors can
-  % formalize this theorem, including the decomposition of the group algebra
-  % into irreducible representations and the related module isomorphism.
-  \uses{thm:isotypic-decomp, def:irr-set}
-  Let $k[G]$ denote the group algebra, viewed as the regular representation of
-  $G$ by left multiplication. Then
+  and consequently
   \[
-    k[G] \;\cong\; \bigoplus_{\xi \in \hat G}\; \rho_\xi^{\oplus d_\xi}
-    \quad\text{as left $G$-representations,}
-  \]
-  where $d_\xi = \dim_k V_\xi$.  Equivalently, as two-sided $k[G]$-modules,
-  \[
-    k[G] \;\cong\; \bigoplus_{\xi \in \hat G} \mathrm{End}_k(V_\xi).
+    V \;\cong\; \bigoplus_{\xi \in \hat G} V_\xi^{\oplus m_\xi},
+    \qquad \dim_k V \;=\; \sum_{\xi \in \hat G} m_\xi\, d_\xi.
   \]
 \end{theorem}
 
 \begin{proof}
-  \uses{thm:isotypic-decomp, cor:inner-prod-hom}
-  Apply Theorem~\ref{thm:isotypic-decomp} to the regular representation.
-  The multiplicity of $\rho_\xi$ in $k[G]$ equals
-  $m_\xi = \langle \chi_{k[G]}, \chi_{\rho_\xi} \rangle_G = d_\xi$,
-  which one checks directly: $\chi_{k[G]}(g) = |G| \cdot \mathbf{1}_{g=e}$,
-  so $\langle \chi_{k[G]}, \chi_{\rho_\xi} \rangle_G = \chi_{\rho_\xi}(e) = d_\xi$.
+  \uses{lem:isotypic-disjoint, lem:multiplicity-space, thm:maschke-semisimple}
+  By Theorem~\ref{thm:maschke-semisimple} write $V = \bigoplus_\alpha W_\alpha$
+  with each $W_\alpha$ simple. Group the summands by their isomorphism
+  class $\xi \in \hat G$; the sum of all $W_\alpha$ in class $\xi$ is exactly
+  $V_{(\xi)}$ (it is contained in $V_{(\xi)}$ and contains every simple summand
+  of $V$ isomorphic to $V_\xi$). The $V_{(\xi)}$ jointly span $V$ by
+  construction, and pairwise intersect trivially by
+  Lemma~\ref{lem:isotypic-disjoint}; hence they form an internal direct sum
+  decomposition of $V$. Combine with the description from
+  Lemma~\ref{lem:multiplicity-space}.
 \end{proof}
 
-\chapter{Consequences: Characters as Orthonormal Basis and Dimension Identity}
 
-\section{Characters Form an Orthonormal Basis for Class Functions}
+\chapter{The Peter–Weyl Theorem for Finite Groups}
+\label{chap:peter-weyl}
 
-\begin{definition}[Class function]
-  \label{def:class-fn}
-  \lean{classFunctions}
-  % [~ML] The subspace of conjugation-invariant functions; easy to define locally.
-  \uses{def:finite-group}
-  A \emph{class function} on $G$ is a function $f \colon G \to k$ that is
-  constant on conjugacy classes: $f(hgh^{-1}) = f(g)$ for all $g, h \in G$.
-  The space of class functions is denoted $\mathrm{Cl}(G) \subseteq k^G$.
+\section{The Regular Representation}
+
+\begin{definition}[Left regular representation]
+  \label{def:regular}
+  \lean{Representation.leftRegular, Rep.ofMulAction}
+  \mathlibok
+  % [ML] Mathlib.RepresentationTheory.Basic: Representation.leftRegular k G;
+  %      Mathlib.RepresentationTheory.Rep: Rep.ofMulAction k G G — the
+  %      bundled version on k[G] = (G →₀ k).
+  \uses{def:representation, def:rep-categories}
+  The \emph{left regular representation} is
+  $\lambda : G \to (k[G] \to_{\!\ell[k]} k[G])$ given by
+  $\lambda(g)(\delta_h) = \delta_{gh}$ on the basis $\{\delta_h : h \in G\}$.
+  Mathlib: \texttt{Representation.leftRegular k G} (and its bundled form
+  \texttt{Rep.ofMulAction k G G : Rep k G}).
 \end{definition}
 
-\begin{theorem}[Irreducible characters form an orthonormal basis for class functions]
+\begin{lemma}[Character of the regular representation]
+  \label{lem:char-regular}
+  \lean{Representation.character_leftRegular}
+  % [~ML] The pointwise formula is folklore; not currently a single named
+  %       Mathlib lemma, but trace of the permutation matrix shows
+  %       $\chi_{k[G]}(g) = |\{h : g \cdot h = h\}| = |G|\cdot[g = 1]$.
+  \uses{def:regular, def:character}
+  $\chi_{k[G]}(g) = |G|$ if $g = 1$, and $0$ otherwise.
+\end{lemma}
+
+\begin{proof}
+  \uses{def:regular, def:character}
+  The matrix of $\lambda(g)$ in the basis $\{\delta_h\}_{h \in G}$ is the
+  permutation matrix of left translation by $g$. Its trace is the number of
+  fixed points of $h \mapsto gh$, which is $|G|$ if $g = 1$ and $0$ otherwise
+  (a free $G$-action on $G$ has no fixed points unless $g = 1$).
+\end{proof}
+
+\section{Multiplicities in $k[G]$}
+
+\begin{lemma}[Multiplicity of $V_\xi$ in ${k[G]}$]
+  \label{lem:mult-in-regular}
+  \lean{Representation.multiplicity_in_leftRegular}
+  % [NEW]
+  \uses{lem:char-regular, thm:hom-space-dim-via-char, def:Ghat}
+  Let $\xi \in \hat G$ and $m_\xi$ denote the multiplicity of $V_\xi$ in
+  $k[G]$ (Lemma~\ref{lem:multiplicity-space}). Then $m_\xi = d_\xi$.
+\end{lemma}
+
+\begin{proof}
+  \uses{lem:char-regular, thm:hom-space-dim-via-char, lem:multiplicity-space, lem:char-one}
+  By Lemma~\ref{lem:multiplicity-space}, $m_\xi = \dim_k(V_\xi \to k[G])_G$.
+  By Theorem~\ref{thm:hom-space-dim-via-char},
+  \[
+    \dim_k(V_\xi \to k[G])_G \;=\; \frac{1}{|G|}\sum_g \chi_{V_\xi}(g)\,\chi_{k[G]}(g^{-1}).
+  \]
+  Using Lemma~\ref{lem:char-regular} only the $g = 1$ term survives, giving
+  $\frac{1}{|G|} \cdot \chi_{V_\xi}(1)\cdot|G| = \chi_{V_\xi}(1) = d_\xi$
+  by Lemma~\ref{lem:char-one}.
+\end{proof}
+
+\section{The Peter–Weyl Decomposition}
+
+\begin{theorem}[Peter–Weyl: decomposition of the regular representation]
+  \label{thm:peter-weyl}
+  \lean{PeterWeyl.regular_decomposition}
+  % [NEW] Specialisation of Theorem~\ref{thm:isotypic-decomposition}
+  %       to V = k[G], using Lemma~\ref{lem:mult-in-regular}.
+  \uses{thm:isotypic-decomposition, lem:mult-in-regular}
+  As $k$-linear $G$-representations,
+  \[
+    k[G] \;\cong\; \bigoplus_{\xi \in \hat G} V_\xi^{\oplus d_\xi}.
+  \]
+  In particular every irreducible representation appears in $k[G]$ with
+  multiplicity equal to its dimension.
+\end{theorem}
+
+\begin{proof}
+  \uses{thm:isotypic-decomposition, lem:mult-in-regular}
+  Apply Theorem~\ref{thm:isotypic-decomposition} to $V := k[G]$, using
+  Lemma~\ref{lem:mult-in-regular} to identify each multiplicity $m_\xi$ with
+  $d_\xi$.
+\end{proof}
+
+\begin{corollary}[Sum of squares of dimensions]
+  \label{cor:sum-of-squares}
+  \lean{PeterWeyl.sum_sq_dim_eq_card}
+  % [NEW] Immediate from Theorem~\ref{thm:peter-weyl} by counting dimensions.
+  \uses{thm:peter-weyl}
+  $\displaystyle |G| \;=\; \sum_{\xi \in \hat G} d_\xi^{\,2}$.
+\end{corollary}
+
+\begin{proof}
+  \uses{thm:peter-weyl}
+  Take $\dim_k$ of both sides of Theorem~\ref{thm:peter-weyl}: the left
+  side is $|G|$, the right side is $\sum_\xi d_\xi \cdot d_\xi = \sum_\xi d_\xi^2$.
+\end{proof}
+
+\section{Two-Sided Wedderburn Form (optional)}
+
+\begin{theorem}[Wedderburn form of the group algebra]
+  \label{thm:wedderburn}
+  \lean{PeterWeyl.groupAlgebra_iso_endomorphism_product}
+  % [NEW] Strengthens Theorem~\ref{thm:peter-weyl} to a ring isomorphism.
+  %       Mathlib has IsSemisimpleRing for k[G] under our hypotheses, but
+  %       does not yet package the explicit Wedderburn decomposition
+  %       k[G] ≅ ∏ End_k(V_ξ) as a ring isomorphism.
+  \uses{thm:peter-weyl, cor:schur-scalar}
+  As $k$-algebras (equivalently, as two-sided $k[G]$-modules) there is an
+  isomorphism
+  \[
+    k[G] \;\cong\; \prod_{\xi \in \hat G} \mathrm{End}_k(V_\xi).
+  \]
+\end{theorem}
+
+\begin{proof}
+  \uses{thm:peter-weyl, cor:schur-scalar}
+  The $k$-algebra map $\Phi : k[G] \to \prod_\xi \mathrm{End}_k(V_\xi)$
+  sending $\sum_g a_g g \mapsto (\sum_g a_g\,V_\xi.\rho(g))_\xi$ is well-defined
+  and an algebra homomorphism by definition of $V_\xi.\rho$ as a monoid hom.
+  Surjectivity: under the equivalence
+  \texttt{Rep.equivalenceModuleMonoidAlgebra}, $\Phi$ corresponds to the
+  natural map
+  $k[G] \to \mathrm{End}_{k[G]}\bigl(\bigoplus_\xi V_\xi^{\oplus d_\xi}\bigr)
+  \cong \prod_\xi \mathrm{End}_k(V_\xi)^{\mathrm{op}}$
+  (the second isomorphism uses Corollary~\ref{cor:schur-scalar} and the
+  Schur identification $\mathrm{End}_{k[G]}(V_\xi^{\oplus d_\xi}) \cong
+  M_{d_\xi}(k)$). Injectivity: source and target have equal dimension over $k$,
+  namely $|G| = \sum_\xi d_\xi^2$ (Corollary~\ref{cor:sum-of-squares}); since
+  $\Phi$ is surjective and source and target are finite-dimensional with
+  matching dimension, $\Phi$ is bijective.
+\end{proof}
+
+
+\chapter{Multiplicity Formula and Character Theory Consequences}
+\label{chap:character-consequences}
+
+\section{Multiplicity from Characters}
+
+\begin{theorem}[Multiplicity formula]
+  \label{thm:multiplicity-formula}
+  \lean{Representation.multiplicity_eq_inner_char}
+  % [NEW] Combines Lemma~\ref{lem:multiplicity-space} with Theorem~\ref{thm:hom-space-dim-via-char}.
+  \uses{lem:multiplicity-space, thm:hom-space-dim-via-char, def:character}
+  For any $V : \texttt{FDRep k G}$ and $\xi \in \hat G$, the multiplicity
+  $m_\xi$ of $V_\xi$ in $V$ satisfies
+  \[
+    m_\xi \;=\; \langle \chi_V, \chi_{V_\xi}\rangle_G
+    \;=\; \frac{1}{|G|}\sum_{g \in G}\chi_V(g)\,\chi_{V_\xi}(g^{-1}).
+  \]
+\end{theorem}
+
+\begin{proof}
+  \uses{lem:multiplicity-space, thm:hom-space-dim-via-char}
+  By Lemma~\ref{lem:multiplicity-space}, $m_\xi = \dim_k(V_\xi \to V)_G$.
+  By Theorem~\ref{thm:hom-space-dim-via-char},
+  $\dim_k(V_\xi \to V)_G = |G|^{-1}\sum_g \chi_{V_\xi}(g)\chi_V(g^{-1})$.
+  Replacing $g \mapsto g^{-1}$ (a bijection of $G$) shows this equals
+  $|G|^{-1}\sum_g \chi_V(g)\chi_{V_\xi}(g^{-1}) = \langle\chi_V,\chi_{V_\xi}\rangle_G$.
+\end{proof}
+
+\begin{corollary}[Characters separate isomorphism classes]
+  \label{cor:char-separates}
+  \lean{FDRep.iso_iff_character_eq}
+  % [NEW] Immediate from Theorem~\ref{thm:multiplicity-formula}.
+  \uses{thm:multiplicity-formula, lem:char-iso, thm:isotypic-decomposition}
+  For $V, W : \texttt{FDRep k G}$, $V \cong W$ iff $\chi_V = \chi_W$.
+\end{corollary}
+
+\begin{proof}
+  \uses{thm:multiplicity-formula, lem:char-iso, thm:isotypic-decomposition}
+  ($\Rightarrow$) is Lemma~\ref{lem:char-iso}. ($\Leftarrow$):
+  by Theorem~\ref{thm:multiplicity-formula}, $\chi_V = \chi_W$ implies the
+  multiplicities $m_\xi$ for $V$ and $W$ coincide; by
+  Theorem~\ref{thm:isotypic-decomposition} the multiplicities determine the
+  isomorphism class, so $V \cong W$.
+\end{proof}
+
+\begin{corollary}[Irreducibility test]
+  \label{cor:irred-test}
+  \lean{FDRep.irreducible_iff_inner_self_eq_one}
+  % [NEW]
+  \uses{thm:multiplicity-formula, def:simple}
+  $V : \texttt{FDRep k G}$ is simple iff $\langle \chi_V, \chi_V\rangle_G = 1$.
+\end{corollary}
+
+\begin{proof}
+  \uses{thm:multiplicity-formula, thm:isotypic-decomposition}
+  Write $V \cong \bigoplus_\xi V_\xi^{\oplus m_\xi}$. Then
+  $\chi_V = \sum_\xi m_\xi \chi_{V_\xi}$ and by orthonormality
+  (Theorem~\ref{thm:char-ortho}),
+  $\langle \chi_V, \chi_V\rangle_G = \sum_\xi m_\xi^2$, an integer.
+  This equals $1$ iff exactly one $m_\xi$ is $1$ and all others are $0$, iff
+  $V \cong V_\xi$ is simple.
+\end{proof}
+
+\section{Class Functions and Their Span}
+
+\begin{definition}[Space of class functions]
+  \label{def:class-functions}
+  \lean{ClassFunction}
+  % [~ML] Easy local definition; not packaged as a standalone object in
+  %       Mathlib but the underlying notion (conjugation invariance) is
+  %       standard.
+  \uses{def:standing-hypotheses}
+  A \emph{class function} on $G$ is a function $f : G \to k$ with
+  $f(hgh^{-1}) = f(g)$ for all $g, h$. Class functions form a $k$-subspace
+  $\mathrm{Cl}(G) \subseteq (G \to k)$ whose dimension equals the number of
+  conjugacy classes of $G$ (with delta functions on conjugacy classes as a
+  basis).
+\end{definition}
+
+\begin{lemma}[$\dim_k \mathrm{Cl}(G) = $ number of conjugacy classes]
+  \label{lem:dim-cl-G}
+  \lean{ClassFunction.finrank_eq_conjClasses}
+  % [~ML] Mathlib has ConjClasses; the dimension count is straightforward.
+  \uses{def:class-functions}
+  $\dim_k \mathrm{Cl}(G) = |\mathrm{ConjClasses}\ G|$.
+\end{lemma}
+
+\begin{proof}
+  \uses{def:class-functions}
+  A class function is determined by, and freely chosen on, each conjugacy
+  class. The indicator functions of conjugacy classes form a basis.
+\end{proof}
+
+\begin{lemma}[Characters lie in $\mathrm{Cl}(G)$]
+  \label{lem:char-in-cl}
+  \lean{FDRep.character_mem_classFunction}
+  % [~ML] Direct from Lemma~\ref{lem:char-conj}.
+  \uses{def:character, def:class-functions, lem:char-conj}
+  For every $V : \texttt{FDRep k G}$, $\chi_V \in \mathrm{Cl}(G)$.
+\end{lemma}
+
+\begin{proof}
+  \leanok
+  \uses{lem:char-conj}
+  Lemma~\ref{lem:char-conj}.
+\end{proof}
+
+\section{Irreducible Characters Span $\mathrm{Cl}(G)$}
+
+The next theorem is the second main result of finite-group character theory
+after the Peter–Weyl decomposition. We isolate the spanning argument as a
+separate lemma to enable independent formalisation.
+
+\begin{lemma}[The projection $T_f$ associated to $f \in \mathrm{Cl}(G)$]
+  \label{lem:Tf-projection}
+  \lean{ClassFunction.toEndomorphism}
+  % [NEW]
+  \uses{def:class-functions, def:representation}
+  For $f \in \mathrm{Cl}(G)$ and $\rho$ a representation of $G$ on $V$, define
+  \[
+    T_f^\rho \;:=\; \frac{1}{|G|}\sum_{g \in G} f(g)\,\rho(g) \;\in\;
+    (V \to_{\!\ell[k]} V).
+  \]
+  Then $T_f^\rho$ is $G$-equivariant: $\rho(h)\, T_f^\rho = T_f^\rho\,\rho(h)$
+  for every $h$.
+\end{lemma}
+
+\begin{proof}
+  \uses{def:class-functions}
+  Compute $\rho(h) T_f^\rho \rho(h)^{-1} = |G|^{-1}\sum_g f(g)\rho(hgh^{-1})
+  = |G|^{-1}\sum_{g'}f(h^{-1}g'h)\rho(g')$ ($g' := hgh^{-1}$)
+  $= |G|^{-1}\sum_{g'}f(g')\rho(g')$ (using $f$ is a class function)
+  $= T_f^\rho$.
+\end{proof}
+
+\begin{lemma}[Schur scalar of $T_f$ on a simple]
+  \label{lem:Tf-on-simple}
+  \lean{ClassFunction.toEndomorphism_simple_smul_id}
+  % [NEW]
+  \uses{lem:Tf-projection, cor:schur-scalar, def:character, def:Ghat}
+  For $\xi \in \hat G$, $T_f^{V_\xi} = \mu_\xi(f)\,\mathrm{id}_{V_\xi}$ where
+  \[
+    \mu_\xi(f) \;=\; \frac{1}{d_\xi \cdot |G|}\sum_{g \in G} f(g)\,\chi_{V_\xi}(g).
+  \]
+  In particular $T_f^{V_\xi} = 0$ iff $\sum_g f(g)\chi_{V_\xi}(g) = 0$.
+\end{lemma}
+
+\begin{proof}
+  \uses{lem:Tf-projection, cor:schur-scalar}
+  By Lemma~\ref{lem:Tf-projection} $T_f^{V_\xi}$ is in $\mathrm{End}_G(V_\xi)$,
+  which by Corollary~\ref{cor:schur-scalar} is one-dimensional spanned by
+  $\mathrm{id}_{V_\xi}$. So $T_f^{V_\xi} = \mu_\xi(f)\mathrm{id}_{V_\xi}$.
+  Take $k$-trace of both sides:
+  $\mathrm{tr}(T_f^{V_\xi}) = |G|^{-1}\sum_g f(g)\chi_{V_\xi}(g)$ on the left
+  and $\mu_\xi(f)\cdot d_\xi$ on the right; solve for $\mu_\xi(f)$.
+\end{proof}
+
+\begin{lemma}[$f$ orthogonal to all $\chi_{V_\xi}$ implies $T_f^V = 0$ for every $V$]
+  \label{lem:f-ortho-implies-Tf-zero}
+  \lean{ClassFunction.toEndomorphism_eq_zero_of_orthogonal}
+  % [NEW]
+  \uses{lem:Tf-on-simple, thm:isotypic-decomposition}
+  Let $f \in \mathrm{Cl}(G)$. If $\sum_g f(g)\chi_{V_\xi}(g) = 0$ for every
+  $\xi \in \hat G$, then for every $V : \texttt{FDRep k G}$, $T_f^V = 0$.
+\end{lemma}
+
+\begin{proof}
+  \uses{lem:Tf-on-simple, thm:isotypic-decomposition}
+  By Theorem~\ref{thm:isotypic-decomposition}, $V$ is a direct sum of simples
+  $V_\xi$, and $T_f^V$ acts diagonally on this decomposition by
+  Lemma~\ref{lem:Tf-projection}. By Lemma~\ref{lem:Tf-on-simple} the
+  hypothesis implies $T_f^{V_\xi} = 0$ on each summand, hence $T_f^V = 0$.
+\end{proof}
+
+\begin{lemma}[Applying $T_f$ on the regular representation to $\delta_1$]
+  \label{lem:Tf-regular-delta-one}
+  \lean{ClassFunction.toEndomorphism_regular_delta_one}
+  % [NEW]
+  \uses{lem:Tf-projection, def:regular}
+  Let $\rho = \lambda$ be the regular representation on $V = k[G]$, and let
+  $\delta_1 \in k[G]$ denote the basis vector at $1 \in G$. Then
+  $T_f^\lambda(\delta_1) = \frac{1}{|G|}\sum_{g \in G} f(g)\,\delta_g
+  = \frac{1}{|G|}\, f$, where on the right we identify $f \in (G \to k)$
+  with the element $\sum_g f(g)\delta_g \in k[G]$.
+\end{lemma}
+
+\begin{proof}
+  \leanok
+  \uses{lem:Tf-projection, def:regular}
+  Compute $T_f^\lambda(\delta_1) = |G|^{-1}\sum_g f(g)\,\lambda(g)\delta_1
+  = |G|^{-1}\sum_g f(g)\,\delta_g$. Identifying $\delta_g$ with the basis
+  function $\mathbf{1}_{\{g\}} \in (G \to k)$ and recombining gives
+  $|G|^{-1}f$.
+\end{proof}
+
+\begin{theorem}[Irreducible characters span $\mathrm{Cl}(G)$]
+  \label{thm:char-span}
+  \lean{FDRep.span_irreducibleCharacters_eq_top}
+  % [NEW]
+  \uses{lem:f-ortho-implies-Tf-zero, lem:Tf-regular-delta-one, lem:char-in-cl}
+  The irreducible characters $\{\chi_{V_\xi}\}_{\xi \in \hat G}$ span
+  $\mathrm{Cl}(G)$.
+\end{theorem}
+
+\begin{proof}
+  \uses{lem:f-ortho-implies-Tf-zero, lem:Tf-regular-delta-one}
+  Suppose $f \in \mathrm{Cl}(G)$ satisfies $\sum_g f(g)\chi_{V_\xi}(g) = 0$
+  for every $\xi \in \hat G$ (this is equivalent to $\langle f, \chi_{V_\xi^*}\rangle_G = 0$
+  for every $\xi$, where $V_\xi^*$ is the dual representation; since
+  $\xi \mapsto \xi^*$ permutes $\hat G$, this is the same as orthogonality
+  to all irreducible characters in $\langle\cdot,\cdot\rangle_G$).
+  By Lemma~\ref{lem:f-ortho-implies-Tf-zero} applied to the regular
+  representation, $T_f^\lambda = 0$. Apply this to $\delta_1$:
+  Lemma~\ref{lem:Tf-regular-delta-one} gives $0 = T_f^\lambda(\delta_1)
+  = |G|^{-1}\,f$ in $k[G]$, hence $f = 0$ in $k^G$. So the orthogonal
+  complement of the irreducible characters in $\mathrm{Cl}(G)$ is zero, i.e.\
+  they span.
+\end{proof}
+
+\begin{theorem}[Irreducible characters are an orthonormal basis of $\mathrm{Cl}(G)$]
   \label{thm:char-basis}
-  \lean{irreducibleCharacters_orthonormalBasis}
-  % [NEW] The Mathlib char_orthonormal gives orthonormality; the basis
-  %       statement (spanning + dimension count) is not yet packaged.
-  \uses{def:class-fn, def:character, thm:char-ortho, thm:peter-weyl-finite}
-  The characters $\{\chi_\xi\}_{\xi \in \hat G}$ form an orthonormal basis for
-  $\mathrm{Cl}(G)$ with respect to the inner product
-  $\langle \cdot, \cdot \rangle_G$.  In particular,
-  $|\hat G| = \dim_k \mathrm{Cl}(G) = \#\{\text{conjugacy classes of } G\}$.
-\end{theorem}
-
-\begin{proof}
-  \uses{thm:char-ortho, thm:peter-weyl-finite}
-  Orthonormality follows from Theorem~\ref{thm:char-ortho} (already in
-  Mathlib).  For spanning: if $f \in \mathrm{Cl}(G)$ is orthogonal to all
-  $\chi_\xi$, then the projector $\frac{d_\xi}{|G|}\sum_g f(g)\rho_\xi(g)$
-  vanishes for all $\xi$.  By the Fourier inversion formula (consequence of
-  Theorem~\ref{thm:peter-weyl-finite}), $f = 0$.
-
-  The dimension count $|\hat G| = \#\{\text{conjugacy classes}\}$ follows
-  since both sides equal $\dim_k \mathrm{Cl}(G)$ (basis on one side, explicit
-  basis of delta functions on conjugacy classes on the other).
-\end{proof}
-
-\section{Multiplicity Formula}
-
-\begin{corollary}[Multiplicity formula]
-  \label{cor:multiplicity}
-  \lean{multiplicityFormula}
-  % [NEW] Not yet packaged in Mathlib, though it follows immediately from
-  %       Representation.card_inv_mul_sum_char_mul_char_eq_finrank.
-  \uses{thm:char-basis, cor:inner-prod-hom}
-  If $V \cong \bigoplus_{\xi \in \hat G} V_\xi^{\oplus m_\xi}$, then
+  \lean{FDRep.irreducibleCharacters_orthonormalBasis}
+  % [NEW] Packages Theorems \ref{thm:char-ortho} and \ref{thm:char-span}
+  %       as a Basis (or OrthonormalBasis if k = ℂ).
+  \uses{thm:char-ortho, thm:char-span, lem:dim-cl-G, def:Ghat}
+  $\{\chi_{V_\xi}\}_{\xi \in \hat G}$ is an orthonormal basis of
+  $\mathrm{Cl}(G)$ for the inner product $\langle\cdot,\cdot\rangle_G$.
+  In particular,
   \[
-    m_\xi \;=\; \langle \chi_V, \chi_\xi \rangle_G
-    \;=\; \frac{1}{|G|}\sum_{g \in G} \chi_V(g)\, \chi_\xi(g^{-1}).
-  \]
-  In particular, two representations are isomorphic if and only if they have
-  the same character.
-\end{corollary}
-
-\begin{proof}
-  \uses{cor:inner-prod-hom, thm:char-ortho}
-  Since $\chi_V = \sum_\xi m_\xi \chi_\xi$ and the $\chi_\xi$ are orthonormal
-  (Theorem~\ref{thm:char-ortho}), taking $\langle \cdot, \chi_\xi \rangle_G$
-  gives $m_\xi$.  Uniqueness of multiplicities implies isomorphism $\Leftrightarrow$
-  equal characters.
-\end{proof}
-
-\section{Dimension Identity}
-
-\begin{theorem}[Sum of squares of dimensions]
-  \label{thm:dim-identity}
-  \lean{sumSquaresDimensions}
-  % [NEW] Not in Mathlib as a standalone theorem.
-  % CONTRIBUTION POINT: Parseval's formula for finite groups states that the
-  % sum of squares of dimensions of irreducible representations equals the group order.
-  % This is a fundamental result that can be formalized as part of the Peter-Weyl theorem
-  % verification. Contributors can prove this identity and related Parseval-type
-  % equalities for characters and matrix coefficients.
-  \uses{thm:peter-weyl-finite}
-  For any finite group $G$,
-  \[
-    |G| \;=\; \sum_{\xi \in \hat G} d_\xi^2
-    \;=\; \sum_{\xi \in \hat G} (\dim_k V_\xi)^2.
+    |\hat G| \;=\; \dim_k \mathrm{Cl}(G) \;=\; |\mathrm{ConjClasses}\ G|.
   \]
 \end{theorem}
 
 \begin{proof}
-  \uses{thm:peter-weyl-finite}
-  Compare dimensions in the isomorphism $k[G] \cong \bigoplus_\xi
-  \mathrm{End}_k(V_\xi)$ from Theorem~\ref{thm:peter-weyl-finite}:
-  $\dim k[G] = |G|$ and $\dim \mathrm{End}_k(V_\xi) = d_\xi^2$.
+  \uses{thm:char-ortho, thm:char-span, lem:dim-cl-G}
+  Orthonormality is Theorem~\ref{thm:char-ortho}, hence the
+  $\chi_{V_\xi}$ are linearly independent. Spanning is
+  Theorem~\ref{thm:char-span}. Hence they form a basis. The cardinality
+  identity $|\hat G| = |\mathrm{ConjClasses}\ G|$ follows by comparing
+  $\dim_k \mathrm{Cl}(G)$ via this basis with Lemma~\ref{lem:dim-cl-G}.
 \end{proof}
 
-\begin{corollary}[Irreducibility criterion]
-  \label{cor:irred-criterion}
-  \lean{irreducibilityCriterion}
-  % [NEW] Follows from multiplicity formula; not packaged in Mathlib.
-  \uses{cor:multiplicity, thm:char-ortho}
-  A representation $\rho$ is irreducible if and only if
-  $\langle \chi_\rho, \chi_\rho \rangle_G = 1$.
-\end{corollary}
 
-\begin{proof}
-  \uses{cor:multiplicity}
-  If $\rho \cong \bigoplus_\xi V_\xi^{\oplus m_\xi}$, then
-  $\langle \chi_\rho, \chi_\rho \rangle_G = \sum_\xi m_\xi^2$.
-  This equals $1$ iff exactly one $m_\xi = 1$ and the rest vanish,
-  i.e.\ $\rho$ is irreducible.
-\end{proof}
+\chapter{Summary of Mathlib Status}
+\label{chap:status}
+
+\paragraph{Already in Mathlib (\texttt{[ML]}).}
+The following declarations underpin the entire blueprint:
+\texttt{Representation}, \texttt{Representation.asModule}, \texttt{Rep},
+\texttt{FDRep}, \texttt{CategoryTheory.Simple},
+\texttt{Representation.invariants},
+\texttt{LinearMap.conjugate}, \texttt{LinearMap.conjugate\_i},
+\texttt{LinearMap.sumOfConjugatesEquivariant},
+\texttt{LinearMap.equivariantProjection},
+\texttt{LinearMap.equivariantProjection\_condition},
+\texttt{MonoidAlgebra.exists\_leftInverse\_of\_injective},
+\texttt{MonoidAlgebra.Submodule.exists\_isCompl},
+\texttt{MonoidAlgebra.Submodule.instIsSemisimpleModule},
+\texttt{FDRep.finrank\_hom\_simple\_simple} (Schur),
+\texttt{FDRep.character}, \texttt{FDRep.char\_one},
+\texttt{FDRep.char\_conj}, \texttt{FDRep.char\_iso},
+\texttt{FDRep.char\_orthonormal},
+\texttt{FDRep.average\_char\_eq\_finrank\_invariants},
+\texttt{Representation.card\_inv\_mul\_sum\_char\_mul\_char\_eq\_finrank},
+\texttt{Representation.leftRegular}, \texttt{Rep.ofMulAction}.
+
+\paragraph{Close analogues (\texttt{[\textasciitilde ML]}).}
+The space \texttt{ClassFunction} and the dimension count
+$\dim \mathrm{Cl}(G) = |\mathrm{ConjClasses}\ G|$ are not packaged but
+trivial. The character of the regular representation
+($\chi_{k[G]} = |G|\cdot\mathbf{1}_{\{1\}}$) is folklore; trivial from the
+permutation-matrix description of \texttt{Rep.ofMulAction}.
+
+\paragraph{Newly required (\texttt{[NEW]}).}
+The contributions to Mathlib that this blueprint amounts to are:
+the inner product $\langle\cdot,\cdot\rangle_G$
+(Definition~\ref{def:inner-prod}), the symmetrisation
+(Definition~\ref{def:symmetrisation}) and matrix-coefficient orthogonality
+(Theorems \ref{thm:matrix-coeff-ortho-self}, \ref{thm:matrix-coeff-ortho-distinct}),
+the indexing set $\hat G$ and its finiteness, the isotypic component and
+multiplicity space (Definition~\ref{def:isotypic-component},
+Lemma~\ref{lem:multiplicity-space}), the isotypic decomposition
+(Theorem~\ref{thm:isotypic-decomposition}),
+the Peter–Weyl decomposition (Theorem~\ref{thm:peter-weyl}) and its
+sum-of-squares corollary, the optional Wedderburn form
+(Theorem~\ref{thm:wedderburn}), the multiplicity formula
+(Theorem~\ref{thm:multiplicity-formula}) and its corollaries, and the spanning
+of $\mathrm{Cl}(G)$ by irreducible characters
+(Theorem~\ref{thm:char-span}, Theorem~\ref{thm:char-basis}).
