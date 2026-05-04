@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  MathJax = { 
+    tex: {
+		    inlineMath: [['\\(','\\)']]
+	} }
+</script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<meta name="generator" content="plasTeX" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Peter WWeyl Lean: Multiplicity from Characters</title>
+<link rel="next" href="sect0018.html" title="Class Functions and Their Span" />
+<link rel="prev" href="chap-character-consequences.html" title="Multiplicity Formula and Character Theory Consequences" />
+<link rel="up" href="chap-character-consequences.html" title="Multiplicity Formula and Character Theory Consequences" />
+<link rel="stylesheet" href="styles/theme-white.css" />
+<link rel="stylesheet" href="styles/amsthm.css" />
+</head>
+
+<body>
+<header>
+<svg  id="toc-toggle" class="icon icon-list-numbered "><use xlink:href="symbol-defs.svg#icon-list-numbered"></use></svg>
+<h1 id="doc_title"><a href="index.html">Peter WWeyl Lean</a></h1>
+</header>
+
+<div class="wrapper">
+<nav class="toc">
+<ul class="sub-toc-0">
+<li class="">
+  <a href="chap-background.html"><span class="toc_ref">1</span> <span class="toc_entry">Background: Finite Groups, Representations, Intertwiners</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0001.html"><span class="toc_ref">1.1</span> <span class="toc_entry">Hypotheses and Notation</span></a>
+ </li>
+<li class="">
+  <a href="sect0002.html"><span class="toc_ref">1.2</span> <span class="toc_entry">Representations and Their Bundlings</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class="">
+  <a href="chap-maschke.html"><span class="toc_ref">2</span> <span class="toc_entry">Maschke’s Theorem and Semisimplicity</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0003.html"><span class="toc_ref">2.1</span> <span class="toc_entry">The Conjugate of a Linear Map</span></a>
+ </li>
+<li class="">
+  <a href="sect0004.html"><span class="toc_ref">2.2</span> <span class="toc_entry">The Averaged (Equivariant) Projection</span></a>
+ </li>
+<li class="">
+  <a href="sect0005.html"><span class="toc_ref">2.3</span> <span class="toc_entry">Maschke’s Theorem</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class="">
+  <a href="chap-schur.html"><span class="toc_ref">3</span> <span class="toc_entry">Schur’s Lemma and Matrix-Coefficient Orthogonality</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0006.html"><span class="toc_ref">3.1</span> <span class="toc_entry">Schur’s Lemma</span></a>
+ </li>
+<li class="">
+  <a href="sect0007.html"><span class="toc_ref">3.2</span> <span class="toc_entry">The Symmetrisation \(A \mapsto |G|^{-1}\sum _g \rho (g) A \rho (g)^{-1}\)</span></a>
+ </li>
+<li class="">
+  <a href="sect0008.html"><span class="toc_ref">3.3</span> <span class="toc_entry">Matrix-Coefficient Orthogonality (Schur II)</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class="">
+  <a href="chap-characters.html"><span class="toc_ref">4</span> <span class="toc_entry">Characters and Their Orthogonality</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0009.html"><span class="toc_ref">4.1</span> <span class="toc_entry">Characters</span></a>
+ </li>
+<li class="">
+  <a href="sect0010.html"><span class="toc_ref">4.2</span> <span class="toc_entry">The Averaging Formula and Character Orthonormality</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class="">
+  <a href="chap-isotypic.html"><span class="toc_ref">5</span> <span class="toc_entry">Isotypic Decomposition</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0011.html"><span class="toc_ref">5.1</span> <span class="toc_entry">The Indexing Set \(\hat G\)</span></a>
+ </li>
+<li class="">
+  <a href="sect0012.html"><span class="toc_ref">5.2</span> <span class="toc_entry">Isotypic Components</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class="">
+  <a href="chap-peter-weyl.html"><span class="toc_ref">6</span> <span class="toc_entry">The Peter–Weyl Theorem for Finite Groups</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0013.html"><span class="toc_ref">6.1</span> <span class="toc_entry">The Regular Representation</span></a>
+ </li>
+<li class="">
+  <a href="sect0014.html"><span class="toc_ref">6.2</span> <span class="toc_entry">Multiplicities in \(k[G]\)</span></a>
+ </li>
+<li class="">
+  <a href="sect0015.html"><span class="toc_ref">6.3</span> <span class="toc_entry">The Peter–Weyl Decomposition</span></a>
+ </li>
+<li class="">
+  <a href="sect0016.html"><span class="toc_ref">6.4</span> <span class="toc_entry">Two-Sided Wedderburn Form (optional)</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class=" active">
+  <a href="chap-character-consequences.html"><span class="toc_ref">7</span> <span class="toc_entry">Multiplicity Formula and Character Theory Consequences</span></a>
+  <span class="expand-toc">▼</span>
+  <ul class="sub-toc-1 active">
+     <li class=" active current">
+  <a href="sect0017.html"><span class="toc_ref">7.1</span> <span class="toc_entry">Multiplicity from Characters</span></a>
+ </li>
+<li class="">
+  <a href="sect0018.html"><span class="toc_ref">7.2</span> <span class="toc_entry">Class Functions and Their Span</span></a>
+ </li>
+<li class="">
+  <a href="sect0019.html"><span class="toc_ref">7.3</span> <span class="toc_entry">Irreducible Characters Span \(\mathrm{Cl}(G)\)</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class="">
+  <a href="chap-status.html"><span class="toc_ref">8</span> <span class="toc_entry">Summary of Mathlib Status</span></a>
+ </li>
+</ul>
+</nav>
+
+<div class="content">
+<div class="content-wrapper">
+
+
+<div class="main-text">
+<h1 id="a0000000018">7.1 Multiplicity from Characters</h1>
+<div class="theorem_thmwrapper theorem-style-plain" id="thm:multiplicity-formula">
+  <div class="theorem_thmheading">
+    <span class="theorem_thmcaption">
+    Theorem
+    </span>
+    <span class="theorem_thmlabel">48</span>
+    <span class="theorem_thmtitle">Multiplicity formula</span>
+  </div>
+  <div class="theorem_thmcontent">
+  <p>  Representation.multiplicity_eq_inner_char lem:multiplicity-space, thm:hom-space-dim-via-char, def:character For any \(V : \texttt{FDRep k G}\) and \(\xi \in \hat G\), the multiplicity \(m_\xi \) of \(V_\xi \) in \(V\) satisfies </p>
+<div class="displaymath" id="a0000000068">
+  \[  m_\xi \; =\;  \langle \chi _V, \chi _{V_\xi }\rangle _G \; =\;  \frac{1}{|G|}\sum _{g \in G}\chi _V(g)\, \chi _{V_\xi }(g^{-1}).  \]
+</div>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000069">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  <p>lem:multiplicity-space, thm:hom-space-dim-via-char By Lemma&#160;<a href="sect0012.html#lem:multiplicity-space">40</a>, \(m_\xi = \dim _k(V_\xi \to V)_G\). By Theorem&#160;<a href="sect0010.html#thm:hom-space-dim-via-char">34</a>, \(\dim _k(V_\xi \to V)_G = |G|^{-1}\sum _g \chi _{V_\xi }(g)\chi _V(g^{-1})\). Replacing \(g \mapsto g^{-1}\) (a bijection of \(G\)) shows this equals \(|G|^{-1}\sum _g \chi _V(g)\chi _{V_\xi }(g^{-1}) = \langle \chi _V,\chi _{V_\xi }\rangle _G\). </p>
+
+  </div>
+</div>
+<div class="corollary_thmwrapper theorem-style-plain" id="cor:char-separates">
+  <div class="corollary_thmheading">
+    <span class="corollary_thmcaption">
+    Corollary
+    </span>
+    <span class="corollary_thmlabel">49</span>
+    <span class="corollary_thmtitle">Characters separate isomorphism classes</span>
+  </div>
+  <div class="corollary_thmcontent">
+  <p>  FDRep.iso_iff_character_eq thm:multiplicity-formula, lem:char-iso, thm:isotypic-decomposition For \(V, W : \texttt{FDRep k G}\), \(V \cong W\) iff \(\chi _V = \chi _W\). </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000070">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  <p>thm:multiplicity-formula, lem:char-iso, thm:isotypic-decomposition (\(\Rightarrow \)) is Lemma&#160;<a href="sect0009.html#lem:char-iso">32</a>. (\(\Leftarrow \)): by Theorem&#160;<a href="sect0017.html#thm:multiplicity-formula">48</a>, \(\chi _V = \chi _W\) implies the multiplicities \(m_\xi \) for \(V\) and \(W\) coincide; by Theorem&#160;<a href="sect0012.html#thm:isotypic-decomposition">41</a> the multiplicities determine the isomorphism class, so \(V \cong W\). </p>
+
+  </div>
+</div>
+<div class="corollary_thmwrapper theorem-style-plain" id="cor:irred-test">
+  <div class="corollary_thmheading">
+    <span class="corollary_thmcaption">
+    Corollary
+    </span>
+    <span class="corollary_thmlabel">50</span>
+    <span class="corollary_thmtitle">Irreducibility test</span>
+  </div>
+  <div class="corollary_thmcontent">
+  <p>  FDRep.irreducible_iff_inner_self_eq_one thm:multiplicity-formula, def:simple \(V : \texttt{FDRep k G}\) is simple iff \(\langle \chi _V, \chi _V\rangle _G = 1\). </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000071">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  <p>thm:multiplicity-formula, thm:isotypic-decomposition Write \(V \cong \bigoplus _\xi V_\xi ^{\oplus m_\xi }\). Then \(\chi _V = \sum _\xi m_\xi \chi _{V_\xi }\) and by orthonormality (Theorem&#160;<a href="sect0010.html#thm:char-ortho">35</a>), \(\langle \chi _V, \chi _V\rangle _G = \sum _\xi m_\xi ^2\), an integer. This equals \(1\) iff exactly one \(m_\xi \) is \(1\) and all others are \(0\), iff \(V \cong V_\xi \) is simple. </p>
+
+  </div>
+</div>
+
+</div> <!--main-text -->
+</div> <!-- content-wrapper -->
+</div> <!-- content -->
+</div> <!-- wrapper -->
+
+<nav class="prev_up_next">
+  <a href="chap-character-consequences.html" title="Multiplicity Formula and Character Theory Consequences"><svg  class="icon icon-arrow-left "><use xlink:href="symbol-defs.svg#icon-arrow-left"></use></svg>
+</a>
+  <a href="chap-character-consequences.html" title="Multiplicity Formula and Character Theory Consequences"><svg  class="icon icon-arrow-up "><use xlink:href="symbol-defs.svg#icon-arrow-up"></use></svg>
+</a>
+  <a href="sect0018.html" title="Class Functions and Their Span"><svg  class="icon icon-arrow-right "><use xlink:href="symbol-defs.svg#icon-arrow-right"></use></svg>
+</a>
+</nav>
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/plastex.js"></script>
+<script type="text/javascript" src="js/svgxuse.js"></script>
+</body>
+</html>

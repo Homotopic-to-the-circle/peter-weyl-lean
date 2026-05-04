@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  MathJax = { 
+    tex: {
+		    inlineMath: [['\\(','\\)']]
+	} }
+</script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<meta name="generator" content="plasTeX" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Peter WWeyl Lean: Irreducible Characters Span \(\mathrm{Cl}(G)\)</title>
+<link rel="next" href="chap-status.html" title="Summary of Mathlib Status" />
+<link rel="prev" href="sect0018.html" title="Class Functions and Their Span" />
+<link rel="up" href="chap-character-consequences.html" title="Multiplicity Formula and Character Theory Consequences" />
+<link rel="stylesheet" href="styles/theme-white.css" />
+<link rel="stylesheet" href="styles/amsthm.css" />
+</head>
+
+<body>
+<header>
+<svg  id="toc-toggle" class="icon icon-list-numbered "><use xlink:href="symbol-defs.svg#icon-list-numbered"></use></svg>
+<h1 id="doc_title"><a href="index.html">Peter WWeyl Lean</a></h1>
+</header>
+
+<div class="wrapper">
+<nav class="toc">
+<ul class="sub-toc-0">
+<li class="">
+  <a href="chap-background.html"><span class="toc_ref">1</span> <span class="toc_entry">Background: Finite Groups, Representations, Intertwiners</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0001.html"><span class="toc_ref">1.1</span> <span class="toc_entry">Hypotheses and Notation</span></a>
+ </li>
+<li class="">
+  <a href="sect0002.html"><span class="toc_ref">1.2</span> <span class="toc_entry">Representations and Their Bundlings</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class="">
+  <a href="chap-maschke.html"><span class="toc_ref">2</span> <span class="toc_entry">Maschke’s Theorem and Semisimplicity</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0003.html"><span class="toc_ref">2.1</span> <span class="toc_entry">The Conjugate of a Linear Map</span></a>
+ </li>
+<li class="">
+  <a href="sect0004.html"><span class="toc_ref">2.2</span> <span class="toc_entry">The Averaged (Equivariant) Projection</span></a>
+ </li>
+<li class="">
+  <a href="sect0005.html"><span class="toc_ref">2.3</span> <span class="toc_entry">Maschke’s Theorem</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class="">
+  <a href="chap-schur.html"><span class="toc_ref">3</span> <span class="toc_entry">Schur’s Lemma and Matrix-Coefficient Orthogonality</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0006.html"><span class="toc_ref">3.1</span> <span class="toc_entry">Schur’s Lemma</span></a>
+ </li>
+<li class="">
+  <a href="sect0007.html"><span class="toc_ref">3.2</span> <span class="toc_entry">The Symmetrisation \(A \mapsto |G|^{-1}\sum _g \rho (g) A \rho (g)^{-1}\)</span></a>
+ </li>
+<li class="">
+  <a href="sect0008.html"><span class="toc_ref">3.3</span> <span class="toc_entry">Matrix-Coefficient Orthogonality (Schur II)</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class="">
+  <a href="chap-characters.html"><span class="toc_ref">4</span> <span class="toc_entry">Characters and Their Orthogonality</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0009.html"><span class="toc_ref">4.1</span> <span class="toc_entry">Characters</span></a>
+ </li>
+<li class="">
+  <a href="sect0010.html"><span class="toc_ref">4.2</span> <span class="toc_entry">The Averaging Formula and Character Orthonormality</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class="">
+  <a href="chap-isotypic.html"><span class="toc_ref">5</span> <span class="toc_entry">Isotypic Decomposition</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0011.html"><span class="toc_ref">5.1</span> <span class="toc_entry">The Indexing Set \(\hat G\)</span></a>
+ </li>
+<li class="">
+  <a href="sect0012.html"><span class="toc_ref">5.2</span> <span class="toc_entry">Isotypic Components</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class="">
+  <a href="chap-peter-weyl.html"><span class="toc_ref">6</span> <span class="toc_entry">The Peter–Weyl Theorem for Finite Groups</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0013.html"><span class="toc_ref">6.1</span> <span class="toc_entry">The Regular Representation</span></a>
+ </li>
+<li class="">
+  <a href="sect0014.html"><span class="toc_ref">6.2</span> <span class="toc_entry">Multiplicities in \(k[G]\)</span></a>
+ </li>
+<li class="">
+  <a href="sect0015.html"><span class="toc_ref">6.3</span> <span class="toc_entry">The Peter–Weyl Decomposition</span></a>
+ </li>
+<li class="">
+  <a href="sect0016.html"><span class="toc_ref">6.4</span> <span class="toc_entry">Two-Sided Wedderburn Form (optional)</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class=" active">
+  <a href="chap-character-consequences.html"><span class="toc_ref">7</span> <span class="toc_entry">Multiplicity Formula and Character Theory Consequences</span></a>
+  <span class="expand-toc">▼</span>
+  <ul class="sub-toc-1 active">
+     <li class="">
+  <a href="sect0017.html"><span class="toc_ref">7.1</span> <span class="toc_entry">Multiplicity from Characters</span></a>
+ </li>
+<li class="">
+  <a href="sect0018.html"><span class="toc_ref">7.2</span> <span class="toc_entry">Class Functions and Their Span</span></a>
+ </li>
+<li class=" active current">
+  <a href="sect0019.html"><span class="toc_ref">7.3</span> <span class="toc_entry">Irreducible Characters Span \(\mathrm{Cl}(G)\)</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class="">
+  <a href="chap-status.html"><span class="toc_ref">8</span> <span class="toc_entry">Summary of Mathlib Status</span></a>
+ </li>
+</ul>
+</nav>
+
+<div class="content">
+<div class="content-wrapper">
+
+
+<div class="main-text">
+<h1 id="a0000000020">7.3 Irreducible Characters Span \(\mathrm{Cl}(G)\)</h1>
+<p>The next theorem is the second main result of finite-group character theory after the Peter–Weyl decomposition. We isolate the spanning argument as a separate lemma to enable independent formalisation. </p>
+<div class="lemma_thmwrapper theorem-style-plain" id="lem:Tf-projection">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">54</span>
+    <span class="lemma_thmtitle">The projection \(T_f\) associated to \(f \in \mathrm{Cl}(G)\)</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p>  ClassFunction.toEndomorphism def:class-functions, def:representation For \(f \in \mathrm{Cl}(G)\) and \(\rho \) a representation of \(G\) on \(V\), define </p>
+<div class="displaymath" id="a0000000074">
+  \[  T_f^\rho \; :=\;  \frac{1}{|G|}\sum _{g \in G} f(g)\, \rho (g) \; \in \;  (V \to _{\! \ell [k]} V).  \]
+</div>
+<p> Then \(T_f^\rho \) is \(G\)-equivariant: \(\rho (h)\,  T_f^\rho = T_f^\rho \, \rho (h)\) for every \(h\). </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000075">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  <p>def:class-functions Compute \(\rho (h) T_f^\rho \rho (h)^{-1} = |G|^{-1}\sum _g f(g)\rho (hgh^{-1}) = |G|^{-1}\sum _{g'}f(h^{-1}g'h)\rho (g')\) (\(g' := hgh^{-1}\)) \(= |G|^{-1}\sum _{g'}f(g')\rho (g')\) (using \(f\) is a class function) \(= T_f^\rho \). </p>
+
+  </div>
+</div>
+<div class="lemma_thmwrapper theorem-style-plain" id="lem:Tf-on-simple">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">55</span>
+    <span class="lemma_thmtitle">Schur scalar of \(T_f\) on a simple</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p>  ClassFunction.toEndomorphism_simple_smul_id lem:Tf-projection, cor:schur-scalar, def:character, def:Ghat For \(\xi \in \hat G\), \(T_f^{V_\xi } = \mu _\xi (f)\, \mathrm{id}_{V_\xi }\) where </p>
+<div class="displaymath" id="a0000000076">
+  \[  \mu _\xi (f) \; =\;  \frac{1}{d_\xi \cdot |G|}\sum _{g \in G} f(g)\, \chi _{V_\xi }(g).  \]
+</div>
+<p> In particular \(T_f^{V_\xi } = 0\) iff \(\sum _g f(g)\chi _{V_\xi }(g) = 0\). </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000077">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  <p>lem:Tf-projection, cor:schur-scalar By Lemma&#160;<a href="sect0019.html#lem:Tf-projection">54</a> \(T_f^{V_\xi }\) is in \(\mathrm{End}_G(V_\xi )\), which by Corollary&#160;<a href="sect0006.html#cor:schur-scalar">22</a> is one-dimensional spanned by \(\mathrm{id}_{V_\xi }\). So \(T_f^{V_\xi } = \mu _\xi (f)\mathrm{id}_{V_\xi }\). Take \(k\)-trace of both sides: \(\mathrm{tr}(T_f^{V_\xi }) = |G|^{-1}\sum _g f(g)\chi _{V_\xi }(g)\) on the left and \(\mu _\xi (f)\cdot d_\xi \) on the right; solve for \(\mu _\xi (f)\). </p>
+
+  </div>
+</div>
+<div class="lemma_thmwrapper theorem-style-plain" id="lem:f-ortho-implies-Tf-zero">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">56</span>
+    <span class="lemma_thmtitle">\(f\) orthogonal to all \(\chi _{V_\xi }\) implies \(T_f^V = 0\) for every \(V\)</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p>  ClassFunction.toEndomorphism_eq_zero_of_orthogonal lem:Tf-on-simple, thm:isotypic-decomposition Let \(f \in \mathrm{Cl}(G)\). If \(\sum _g f(g)\chi _{V_\xi }(g) = 0\) for every \(\xi \in \hat G\), then for every \(V : \texttt{FDRep k G}\), \(T_f^V = 0\). </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000078">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  <p>lem:Tf-on-simple, thm:isotypic-decomposition By Theorem&#160;<a href="sect0012.html#thm:isotypic-decomposition">41</a>, \(V\) is a direct sum of simples \(V_\xi \), and \(T_f^V\) acts diagonally on this decomposition by Lemma&#160;<a href="sect0019.html#lem:Tf-projection">54</a>. By Lemma&#160;<a href="sect0019.html#lem:Tf-on-simple">55</a> the hypothesis implies \(T_f^{V_\xi } = 0\) on each summand, hence \(T_f^V = 0\). </p>
+
+  </div>
+</div>
+<div class="lemma_thmwrapper theorem-style-plain" id="lem:Tf-regular-delta-one">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">57</span>
+    <span class="lemma_thmtitle">Applying \(T_f\) on the regular representation to \(\delta _1\)</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p>  ClassFunction.toEndomorphism_regular_delta_one lem:Tf-projection, def:regular Let \(\rho = \lambda \) be the regular representation on \(V = k[G]\), and let \(\delta _1 \in k[G]\) denote the basis vector at \(1 \in G\). Then \(T_f^\lambda (\delta _1) = \frac{1}{|G|}\sum _{g \in G} f(g)\, \delta _g = \frac{1}{|G|}\,  f\), where on the right we identify \(f \in (G \to k)\) with the element \(\sum _g f(g)\delta _g \in k[G]\). </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000079">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  <p>lem:Tf-projection, def:regular Compute \(T_f^\lambda (\delta _1) = |G|^{-1}\sum _g f(g)\, \lambda (g)\delta _1 = |G|^{-1}\sum _g f(g)\, \delta _g\). Identifying \(\delta _g\) with the basis function \(\mathbf{1}_{\{ g\} } \in (G \to k)\) and recombining gives \(|G|^{-1}f\). </p>
+
+  </div>
+</div>
+<div class="theorem_thmwrapper theorem-style-plain" id="thm:char-span">
+  <div class="theorem_thmheading">
+    <span class="theorem_thmcaption">
+    Theorem
+    </span>
+    <span class="theorem_thmlabel">58</span>
+    <span class="theorem_thmtitle">Irreducible characters span \(\mathrm{Cl}(G)\)</span>
+  </div>
+  <div class="theorem_thmcontent">
+  <p>  FDRep.span_irreducibleCharacters_eq_top lem:f-ortho-implies-Tf-zero, lem:Tf-regular-delta-one, lem:char-in-cl The irreducible characters \(\{ \chi _{V_\xi }\} _{\xi \in \hat G}\) span \(\mathrm{Cl}(G)\). </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000080">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  <p>lem:f-ortho-implies-Tf-zero, lem:Tf-regular-delta-one Suppose \(f \in \mathrm{Cl}(G)\) satisfies \(\sum _g f(g)\chi _{V_\xi }(g) = 0\) for every \(\xi \in \hat G\) (this is equivalent to \(\langle f, \chi _{V_\xi ^*}\rangle _G = 0\) for every \(\xi \), where \(V_\xi ^*\) is the dual representation; since \(\xi \mapsto \xi ^*\) permutes \(\hat G\), this is the same as orthogonality to all irreducible characters in \(\langle \cdot ,\cdot \rangle _G\)). By Lemma&#160;<a href="sect0019.html#lem:f-ortho-implies-Tf-zero">56</a> applied to the regular representation, \(T_f^\lambda = 0\). Apply this to \(\delta _1\): Lemma&#160;<a href="sect0019.html#lem:Tf-regular-delta-one">57</a> gives \(0 = T_f^\lambda (\delta _1) = |G|^{-1}\, f\) in \(k[G]\), hence \(f = 0\) in \(k^G\). So the orthogonal complement of the irreducible characters in \(\mathrm{Cl}(G)\) is zero, i.e. they span. </p>
+
+  </div>
+</div>
+<div class="theorem_thmwrapper theorem-style-plain" id="thm:char-basis">
+  <div class="theorem_thmheading">
+    <span class="theorem_thmcaption">
+    Theorem
+    </span>
+    <span class="theorem_thmlabel">59</span>
+    <span class="theorem_thmtitle">Irreducible characters are an orthonormal basis of \(\mathrm{Cl}(G)\)</span>
+  </div>
+  <div class="theorem_thmcontent">
+  <p>  FDRep.irreducibleCharacters_orthonormalBasis thm:char-ortho, thm:char-span, lem:dim-cl-G, def:Ghat \(\{ \chi _{V_\xi }\} _{\xi \in \hat G}\) is an orthonormal basis of \(\mathrm{Cl}(G)\) for the inner product \(\langle \cdot ,\cdot \rangle _G\). In particular, </p>
+<div class="displaymath" id="a0000000081">
+  \[  |\hat G| \; =\;  \dim _k \mathrm{Cl}(G) \; =\;  |\mathrm{ConjClasses}\  G|.  \]
+</div>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000082">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  <p>thm:char-ortho, thm:char-span, lem:dim-cl-G Orthonormality is Theorem&#160;<a href="sect0010.html#thm:char-ortho">35</a>, hence the \(\chi _{V_\xi }\) are linearly independent. Spanning is Theorem&#160;<a href="sect0019.html#thm:char-span">58</a>. Hence they form a basis. The cardinality identity \(|\hat G| = |\mathrm{ConjClasses}\  G|\) follows by comparing \(\dim _k \mathrm{Cl}(G)\) via this basis with Lemma&#160;<a href="sect0018.html#lem:dim-cl-G">52</a>. </p>
+
+  </div>
+</div>
+
+</div> <!--main-text -->
+</div> <!-- content-wrapper -->
+</div> <!-- content -->
+</div> <!-- wrapper -->
+
+<nav class="prev_up_next">
+  <a href="sect0018.html" title="Class Functions and Their Span"><svg  class="icon icon-arrow-left "><use xlink:href="symbol-defs.svg#icon-arrow-left"></use></svg>
+</a>
+  <a href="chap-character-consequences.html" title="Multiplicity Formula and Character Theory Consequences"><svg  class="icon icon-arrow-up "><use xlink:href="symbol-defs.svg#icon-arrow-up"></use></svg>
+</a>
+  <a href="chap-status.html" title="Summary of Mathlib Status"><svg  class="icon icon-arrow-right "><use xlink:href="symbol-defs.svg#icon-arrow-right"></use></svg>
+</a>
+</nav>
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/plastex.js"></script>
+<script type="text/javascript" src="js/svgxuse.js"></script>
+</body>
+</html>

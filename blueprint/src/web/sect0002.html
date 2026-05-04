@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  MathJax = { 
+    tex: {
+		    inlineMath: [['\\(','\\)']]
+	} }
+</script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<meta name="generator" content="plasTeX" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Peter WWeyl Lean: Representations and Their Bundlings</title>
+<link rel="next" href="chap-maschke.html" title="Maschke’s Theorem and Semisimplicity" />
+<link rel="prev" href="sect0001.html" title="Hypotheses and Notation" />
+<link rel="up" href="chap-background.html" title="Background: Finite Groups, Representations, Intertwiners" />
+<link rel="stylesheet" href="styles/theme-white.css" />
+<link rel="stylesheet" href="styles/amsthm.css" />
+</head>
+
+<body>
+<header>
+<svg  id="toc-toggle" class="icon icon-list-numbered "><use xlink:href="symbol-defs.svg#icon-list-numbered"></use></svg>
+<h1 id="doc_title"><a href="index.html">Peter WWeyl Lean</a></h1>
+</header>
+
+<div class="wrapper">
+<nav class="toc">
+<ul class="sub-toc-0">
+<li class=" active">
+  <a href="chap-background.html"><span class="toc_ref">1</span> <span class="toc_entry">Background: Finite Groups, Representations, Intertwiners</span></a>
+  <span class="expand-toc">▼</span>
+  <ul class="sub-toc-1 active">
+     <li class="">
+  <a href="sect0001.html"><span class="toc_ref">1.1</span> <span class="toc_entry">Hypotheses and Notation</span></a>
+ </li>
+<li class=" active current">
+  <a href="sect0002.html"><span class="toc_ref">1.2</span> <span class="toc_entry">Representations and Their Bundlings</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class="">
+  <a href="chap-maschke.html"><span class="toc_ref">2</span> <span class="toc_entry">Maschke’s Theorem and Semisimplicity</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0003.html"><span class="toc_ref">2.1</span> <span class="toc_entry">The Conjugate of a Linear Map</span></a>
+ </li>
+<li class="">
+  <a href="sect0004.html"><span class="toc_ref">2.2</span> <span class="toc_entry">The Averaged (Equivariant) Projection</span></a>
+ </li>
+<li class="">
+  <a href="sect0005.html"><span class="toc_ref">2.3</span> <span class="toc_entry">Maschke’s Theorem</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class="">
+  <a href="chap-schur.html"><span class="toc_ref">3</span> <span class="toc_entry">Schur’s Lemma and Matrix-Coefficient Orthogonality</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0006.html"><span class="toc_ref">3.1</span> <span class="toc_entry">Schur’s Lemma</span></a>
+ </li>
+<li class="">
+  <a href="sect0007.html"><span class="toc_ref">3.2</span> <span class="toc_entry">The Symmetrisation \(A \mapsto |G|^{-1}\sum _g \rho (g) A \rho (g)^{-1}\)</span></a>
+ </li>
+<li class="">
+  <a href="sect0008.html"><span class="toc_ref">3.3</span> <span class="toc_entry">Matrix-Coefficient Orthogonality (Schur II)</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class="">
+  <a href="chap-characters.html"><span class="toc_ref">4</span> <span class="toc_entry">Characters and Their Orthogonality</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0009.html"><span class="toc_ref">4.1</span> <span class="toc_entry">Characters</span></a>
+ </li>
+<li class="">
+  <a href="sect0010.html"><span class="toc_ref">4.2</span> <span class="toc_entry">The Averaging Formula and Character Orthonormality</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class="">
+  <a href="chap-isotypic.html"><span class="toc_ref">5</span> <span class="toc_entry">Isotypic Decomposition</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0011.html"><span class="toc_ref">5.1</span> <span class="toc_entry">The Indexing Set \(\hat G\)</span></a>
+ </li>
+<li class="">
+  <a href="sect0012.html"><span class="toc_ref">5.2</span> <span class="toc_entry">Isotypic Components</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class="">
+  <a href="chap-peter-weyl.html"><span class="toc_ref">6</span> <span class="toc_entry">The Peter–Weyl Theorem for Finite Groups</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0013.html"><span class="toc_ref">6.1</span> <span class="toc_entry">The Regular Representation</span></a>
+ </li>
+<li class="">
+  <a href="sect0014.html"><span class="toc_ref">6.2</span> <span class="toc_entry">Multiplicities in \(k[G]\)</span></a>
+ </li>
+<li class="">
+  <a href="sect0015.html"><span class="toc_ref">6.3</span> <span class="toc_entry">The Peter–Weyl Decomposition</span></a>
+ </li>
+<li class="">
+  <a href="sect0016.html"><span class="toc_ref">6.4</span> <span class="toc_entry">Two-Sided Wedderburn Form (optional)</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class="">
+  <a href="chap-character-consequences.html"><span class="toc_ref">7</span> <span class="toc_entry">Multiplicity Formula and Character Theory Consequences</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0017.html"><span class="toc_ref">7.1</span> <span class="toc_entry">Multiplicity from Characters</span></a>
+ </li>
+<li class="">
+  <a href="sect0018.html"><span class="toc_ref">7.2</span> <span class="toc_entry">Class Functions and Their Span</span></a>
+ </li>
+<li class="">
+  <a href="sect0019.html"><span class="toc_ref">7.3</span> <span class="toc_entry">Irreducible Characters Span \(\mathrm{Cl}(G)\)</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class="">
+  <a href="chap-status.html"><span class="toc_ref">8</span> <span class="toc_entry">Summary of Mathlib Status</span></a>
+ </li>
+</ul>
+</nav>
+
+<div class="content">
+<div class="content-wrapper">
+
+
+<div class="main-text">
+<h1 id="a0000000003">1.2 Representations and Their Bundlings</h1>
+<div class="definition_thmwrapper theorem-style-definition" id="def:representation">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">2</span>
+    <span class="definition_thmtitle">\(k\)-linear representation</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p>  Representation def:standing-hypotheses A <em>\(k\)-linear representation</em> of \(G\) on a \(k\)-module \(V\) is a monoid homomorphism \(\rho : G \to (V \to _{\! \ell [k]} V)^{\! \times }\) from \(G\) into the multiplicative monoid of \(k\)-linear endomorphisms of \(V\). In Mathlib this is the abbreviation <span class="ttfamily">Representation k G V := G →* (V →ₗ[k] V)</span>. </p>
+
+  </div>
+</div>
+<div class="definition_thmwrapper theorem-style-definition" id="def:as-module">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">3</span>
+    <span class="definition_thmtitle">\(\rho .\mathrm{asModule}\) : MonoidAlgebra-module structure</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p>  Representation.asModule def:representation Given \(\rho : \mathrm{Representation}\  k\  G\  V\), the type <span class="ttfamily">ρ.asModule</span> carries a canonical <span class="ttfamily">MonoidAlgebra k G</span>-module structure that extends the \(k\)-action on \(V\). Conversely, any \(k[G]\)-module gives rise to a representation. This identification (Mathlib records it as the equivalence <span class="ttfamily">Rep.equivalenceModuleMonoidAlgebra</span>) is the bridge between representation-theoretic and module-theoretic statements. </p>
+
+  </div>
+</div>
+<div class="definition_thmwrapper theorem-style-definition" id="def:rep-categories">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">4</span>
+    <span class="definition_thmtitle">Bundled categories <span class="ttfamily">Rep k G</span> and <span class="ttfamily">FDRep k G</span></span>
+  </div>
+  <div class="definition_thmcontent">
+  <p>  Rep, FDRep def:representation <span class="ttfamily">Rep k G</span> is the category of \(k\)-linear \(G\)-representations: objects are pairs \((V, \rho )\) as above, morphisms are \(G\)-equivariant \(k\)-linear maps. <span class="ttfamily">FDRep k G</span> is the full subcategory of finite-dimensional representations. For \(V : \texttt{FDRep k G}\), the underlying vector space is <span class="ttfamily">V.V</span> (or by coercion just <span class="ttfamily">V</span>) and the action is <span class="ttfamily">V.ρ : G →* (V →ₗ[k] V)</span>. </p>
+
+  </div>
+</div>
+<div class="definition_thmwrapper theorem-style-definition" id="def:intertwiner">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">5</span>
+    <span class="definition_thmtitle">Intertwining map = morphism in <span class="ttfamily">FDRep k G</span></span>
+  </div>
+  <div class="definition_thmcontent">
+  <p>  FDRep def:rep-categories An <em>intertwining map</em> (or <em>\(G\)-map</em>) from \(V\) to \(W\) in <span class="ttfamily">FDRep k G</span> is a morphism \(V \longrightarrow W\), i.e. a \(k\)-linear map \(T : V \to W\) such that \(T \circ \rho _V(g) = \rho _W(g) \circ T\) for all \(g \in G\). The hom space \(V \to W\) is finite-dimensional over \(k\). </p>
+
+  </div>
+</div>
+<div class="definition_thmwrapper theorem-style-definition" id="def:rep-iso">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">6</span>
+    <span class="definition_thmtitle">Isomorphism of representations</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p>  CategoryTheory.Iso def:intertwiner Two representations \(V, W : \texttt{FDRep k G}\) are <em>isomorphic</em>, \(V \cong W\), if there is an isomorphism \(V \cong W\) in the category <span class="ttfamily">FDRep k G</span>: equivalently, a \(k\)-linear isomorphism whose underlying map is \(G\)-equivariant. </p>
+
+  </div>
+</div>
+<div class="definition_thmwrapper theorem-style-definition" id="def:subrep">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">7</span>
+    <span class="definition_thmtitle">Subrepresentation, invariants</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p>  Representation.invariants def:as-module A <em>subrepresentation</em> of \(\rho \) on \(V\) is an <span class="ttfamily">(MonoidAlgebra k G)</span>-submodule of <span class="ttfamily">ρ.asModule</span>; equivalently, a \(k\)-subspace \(W \subseteq V\) with \(\rho (g)(W) \subseteq W\) for every \(g \in G\). The <em>\(G\)-invariants</em> are \(V^G := \{ v \in V : \rho (g)v = v\  \forall g\} \), a \(k\)-subspace <span class="ttfamily">Representation.invariants ρ</span>. </p>
+
+  </div>
+</div>
+<div class="definition_thmwrapper theorem-style-definition" id="def:direct-sum">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">8</span>
+    <span class="definition_thmtitle">Direct sum of representations</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p>  def:rep-categories The category <span class="ttfamily">FDRep k G</span> has biproducts: for \(V, W : \texttt{FDRep k G}\) there is \(V \oplus W : \texttt{FDRep k G}\) (notation <span class="ttfamily">V ⊞ W</span>) on the underlying vector space \(V \oplus W\) with the diagonal action. </p>
+
+  </div>
+</div>
+<div class="definition_thmwrapper theorem-style-definition" id="def:simple">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">9</span>
+    <span class="definition_thmtitle">Irreducible representation</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p>  CategoryTheory.Simple def:rep-categories, def:subrep A finite-dimensional representation \(V : \texttt{FDRep k G}\) is <em>irreducible</em> (or <em>simple</em>) if <span class="ttfamily">CategoryTheory.Simple V</span>: \(V\) is non-zero and every subrepresentation is either \(0\) or \(V\) itself. In Lean this is provided as a typeclass <span class="ttfamily">[CategoryTheory.Simple V]</span>. </p>
+
+  </div>
+</div>
+<div class="definition_thmwrapper theorem-style-definition" id="def:inner-prod">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">10</span>
+    <span class="definition_thmtitle">Inner product on \({k^G}\)</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p>  ClassFunction.innerProduct def:standing-hypotheses For \(f, h : G \to k\) define </p>
+<div class="displaymath" id="a0000000021">
+  \[  \langle f, h\rangle _G \; :=\;  \frac{1}{|G|}\sum _{g \in G} f(g)\,  h(g^{-1}).  \]
+</div>
+<p> When \(h = \overline{h'}\) is replaced by complex conjugation in the unitary case, this recovers the usual Hermitian inner product. We use the algebraic form throughout, which agrees with Mathlib’s character formula <span class="ttfamily">Representation.card_inv_mul_sum_char_mul_char_eq_finrank</span>. </p>
+
+  </div>
+</div>
+
+</div> <!--main-text -->
+</div> <!-- content-wrapper -->
+</div> <!-- content -->
+</div> <!-- wrapper -->
+
+<nav class="prev_up_next">
+  <a href="sect0001.html" title="Hypotheses and Notation"><svg  class="icon icon-arrow-left "><use xlink:href="symbol-defs.svg#icon-arrow-left"></use></svg>
+</a>
+  <a href="chap-background.html" title="Background: Finite Groups, Representations, Intertwiners"><svg  class="icon icon-arrow-up "><use xlink:href="symbol-defs.svg#icon-arrow-up"></use></svg>
+</a>
+  <a href="chap-maschke.html" title="Maschke’s Theorem and Semisimplicity"><svg  class="icon icon-arrow-right "><use xlink:href="symbol-defs.svg#icon-arrow-right"></use></svg>
+</a>
+</nav>
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/plastex.js"></script>
+<script type="text/javascript" src="js/svgxuse.js"></script>
+</body>
+</html>

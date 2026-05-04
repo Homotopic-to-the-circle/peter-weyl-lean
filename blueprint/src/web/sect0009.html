@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  MathJax = { 
+    tex: {
+		    inlineMath: [['\\(','\\)']]
+	} }
+</script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<meta name="generator" content="plasTeX" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Peter WWeyl Lean: Characters</title>
+<link rel="next" href="sect0010.html" title="The Averaging Formula and Character Orthonormality" />
+<link rel="prev" href="chap-characters.html" title="Characters and Their Orthogonality" />
+<link rel="up" href="chap-characters.html" title="Characters and Their Orthogonality" />
+<link rel="stylesheet" href="styles/theme-white.css" />
+<link rel="stylesheet" href="styles/amsthm.css" />
+</head>
+
+<body>
+<header>
+<svg  id="toc-toggle" class="icon icon-list-numbered "><use xlink:href="symbol-defs.svg#icon-list-numbered"></use></svg>
+<h1 id="doc_title"><a href="index.html">Peter WWeyl Lean</a></h1>
+</header>
+
+<div class="wrapper">
+<nav class="toc">
+<ul class="sub-toc-0">
+<li class="">
+  <a href="chap-background.html"><span class="toc_ref">1</span> <span class="toc_entry">Background: Finite Groups, Representations, Intertwiners</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0001.html"><span class="toc_ref">1.1</span> <span class="toc_entry">Hypotheses and Notation</span></a>
+ </li>
+<li class="">
+  <a href="sect0002.html"><span class="toc_ref">1.2</span> <span class="toc_entry">Representations and Their Bundlings</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class="">
+  <a href="chap-maschke.html"><span class="toc_ref">2</span> <span class="toc_entry">Maschke’s Theorem and Semisimplicity</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0003.html"><span class="toc_ref">2.1</span> <span class="toc_entry">The Conjugate of a Linear Map</span></a>
+ </li>
+<li class="">
+  <a href="sect0004.html"><span class="toc_ref">2.2</span> <span class="toc_entry">The Averaged (Equivariant) Projection</span></a>
+ </li>
+<li class="">
+  <a href="sect0005.html"><span class="toc_ref">2.3</span> <span class="toc_entry">Maschke’s Theorem</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class="">
+  <a href="chap-schur.html"><span class="toc_ref">3</span> <span class="toc_entry">Schur’s Lemma and Matrix-Coefficient Orthogonality</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0006.html"><span class="toc_ref">3.1</span> <span class="toc_entry">Schur’s Lemma</span></a>
+ </li>
+<li class="">
+  <a href="sect0007.html"><span class="toc_ref">3.2</span> <span class="toc_entry">The Symmetrisation \(A \mapsto |G|^{-1}\sum _g \rho (g) A \rho (g)^{-1}\)</span></a>
+ </li>
+<li class="">
+  <a href="sect0008.html"><span class="toc_ref">3.3</span> <span class="toc_entry">Matrix-Coefficient Orthogonality (Schur II)</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class=" active">
+  <a href="chap-characters.html"><span class="toc_ref">4</span> <span class="toc_entry">Characters and Their Orthogonality</span></a>
+  <span class="expand-toc">▼</span>
+  <ul class="sub-toc-1 active">
+     <li class=" active current">
+  <a href="sect0009.html"><span class="toc_ref">4.1</span> <span class="toc_entry">Characters</span></a>
+ </li>
+<li class="">
+  <a href="sect0010.html"><span class="toc_ref">4.2</span> <span class="toc_entry">The Averaging Formula and Character Orthonormality</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class="">
+  <a href="chap-isotypic.html"><span class="toc_ref">5</span> <span class="toc_entry">Isotypic Decomposition</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0011.html"><span class="toc_ref">5.1</span> <span class="toc_entry">The Indexing Set \(\hat G\)</span></a>
+ </li>
+<li class="">
+  <a href="sect0012.html"><span class="toc_ref">5.2</span> <span class="toc_entry">Isotypic Components</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class="">
+  <a href="chap-peter-weyl.html"><span class="toc_ref">6</span> <span class="toc_entry">The Peter–Weyl Theorem for Finite Groups</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0013.html"><span class="toc_ref">6.1</span> <span class="toc_entry">The Regular Representation</span></a>
+ </li>
+<li class="">
+  <a href="sect0014.html"><span class="toc_ref">6.2</span> <span class="toc_entry">Multiplicities in \(k[G]\)</span></a>
+ </li>
+<li class="">
+  <a href="sect0015.html"><span class="toc_ref">6.3</span> <span class="toc_entry">The Peter–Weyl Decomposition</span></a>
+ </li>
+<li class="">
+  <a href="sect0016.html"><span class="toc_ref">6.4</span> <span class="toc_entry">Two-Sided Wedderburn Form (optional)</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class="">
+  <a href="chap-character-consequences.html"><span class="toc_ref">7</span> <span class="toc_entry">Multiplicity Formula and Character Theory Consequences</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0017.html"><span class="toc_ref">7.1</span> <span class="toc_entry">Multiplicity from Characters</span></a>
+ </li>
+<li class="">
+  <a href="sect0018.html"><span class="toc_ref">7.2</span> <span class="toc_entry">Class Functions and Their Span</span></a>
+ </li>
+<li class="">
+  <a href="sect0019.html"><span class="toc_ref">7.3</span> <span class="toc_entry">Irreducible Characters Span \(\mathrm{Cl}(G)\)</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class="">
+  <a href="chap-status.html"><span class="toc_ref">8</span> <span class="toc_entry">Summary of Mathlib Status</span></a>
+ </li>
+</ul>
+</nav>
+
+<div class="content">
+<div class="content-wrapper">
+
+
+<div class="main-text">
+<h1 id="a0000000010">4.1 Characters</h1>
+<div class="definition_thmwrapper theorem-style-definition" id="def:character">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">29</span>
+    <span class="definition_thmtitle">Character of a representation</span>
+  </div>
+  <div class="definition_thmcontent">
+  <p>  FDRep.character def:rep-categories The <em>character</em> of \(V : \texttt{FDRep k G}\) is the function \(\chi _V : G \to k\), \(g \mapsto \mathrm{tr}_V(V.\rho (g))\). </p>
+
+  </div>
+</div>
+<div class="lemma_thmwrapper theorem-style-plain" id="lem:char-one">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">30</span>
+    <span class="lemma_thmtitle">\(\chi _V(1) = \dim V\)</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p>  FDRep.char_one def:character \(\chi _V(1) = \dim _k V\). </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000043">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  <p>def:character \(\chi _V(1) = \mathrm{tr}(V.\rho (1)) = \mathrm{tr}(\mathrm{id}_V) = \dim _k V\). This is <span class="ttfamily">FDRep.char_one</span>. </p>
+
+  </div>
+</div>
+<div class="lemma_thmwrapper theorem-style-plain" id="lem:char-conj">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">31</span>
+    <span class="lemma_thmtitle">Characters are class functions</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p>  FDRep.char_conj def:character \(\chi _V(hgh^{-1}) = \chi _V(g)\) for all \(g, h \in G\). </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000044">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  <p>def:character Cyclicity of trace: \(\mathrm{tr}(\rho (h)\rho (g)\rho (h)^{-1}) = \mathrm{tr}(\rho (g))\). Mathlib: <span class="ttfamily">FDRep.char_conj</span>. </p>
+
+  </div>
+</div>
+<div class="lemma_thmwrapper theorem-style-plain" id="lem:char-iso">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">32</span>
+    <span class="lemma_thmtitle">Characters are isomorphism invariants</span>
+  </div>
+  <div class="lemma_thmcontent">
+  <p>  FDRep.char_iso def:character, def:rep-iso If \(V \cong W\) in <span class="ttfamily">FDRep k G</span> then \(\chi _V = \chi _W\). </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000045">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  <p>def:character An isomorphism conjugates one action into the other; trace is conjugation-invariant. Mathlib: <span class="ttfamily">FDRep.char_iso</span>. </p>
+
+  </div>
+</div>
+
+</div> <!--main-text -->
+</div> <!-- content-wrapper -->
+</div> <!-- content -->
+</div> <!-- wrapper -->
+
+<nav class="prev_up_next">
+  <a href="chap-characters.html" title="Characters and Their Orthogonality"><svg  class="icon icon-arrow-left "><use xlink:href="symbol-defs.svg#icon-arrow-left"></use></svg>
+</a>
+  <a href="chap-characters.html" title="Characters and Their Orthogonality"><svg  class="icon icon-arrow-up "><use xlink:href="symbol-defs.svg#icon-arrow-up"></use></svg>
+</a>
+  <a href="sect0010.html" title="The Averaging Formula and Character Orthonormality"><svg  class="icon icon-arrow-right "><use xlink:href="symbol-defs.svg#icon-arrow-right"></use></svg>
+</a>
+</nav>
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/plastex.js"></script>
+<script type="text/javascript" src="js/svgxuse.js"></script>
+</body>
+</html>

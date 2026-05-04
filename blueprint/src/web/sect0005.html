@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  MathJax = { 
+    tex: {
+		    inlineMath: [['\\(','\\)']]
+	} }
+</script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<meta name="generator" content="plasTeX" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Peter WWeyl Lean: Maschke’s Theorem</title>
+<link rel="next" href="chap-schur.html" title="Schur’s Lemma and Matrix-Coefficient Orthogonality" />
+<link rel="prev" href="sect0004.html" title="The Averaged (Equivariant) Projection" />
+<link rel="up" href="chap-maschke.html" title="Maschke’s Theorem and Semisimplicity" />
+<link rel="stylesheet" href="styles/theme-white.css" />
+<link rel="stylesheet" href="styles/amsthm.css" />
+</head>
+
+<body>
+<header>
+<svg  id="toc-toggle" class="icon icon-list-numbered "><use xlink:href="symbol-defs.svg#icon-list-numbered"></use></svg>
+<h1 id="doc_title"><a href="index.html">Peter WWeyl Lean</a></h1>
+</header>
+
+<div class="wrapper">
+<nav class="toc">
+<ul class="sub-toc-0">
+<li class="">
+  <a href="chap-background.html"><span class="toc_ref">1</span> <span class="toc_entry">Background: Finite Groups, Representations, Intertwiners</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0001.html"><span class="toc_ref">1.1</span> <span class="toc_entry">Hypotheses and Notation</span></a>
+ </li>
+<li class="">
+  <a href="sect0002.html"><span class="toc_ref">1.2</span> <span class="toc_entry">Representations and Their Bundlings</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class=" active">
+  <a href="chap-maschke.html"><span class="toc_ref">2</span> <span class="toc_entry">Maschke’s Theorem and Semisimplicity</span></a>
+  <span class="expand-toc">▼</span>
+  <ul class="sub-toc-1 active">
+     <li class="">
+  <a href="sect0003.html"><span class="toc_ref">2.1</span> <span class="toc_entry">The Conjugate of a Linear Map</span></a>
+ </li>
+<li class="">
+  <a href="sect0004.html"><span class="toc_ref">2.2</span> <span class="toc_entry">The Averaged (Equivariant) Projection</span></a>
+ </li>
+<li class=" active current">
+  <a href="sect0005.html"><span class="toc_ref">2.3</span> <span class="toc_entry">Maschke’s Theorem</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class="">
+  <a href="chap-schur.html"><span class="toc_ref">3</span> <span class="toc_entry">Schur’s Lemma and Matrix-Coefficient Orthogonality</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0006.html"><span class="toc_ref">3.1</span> <span class="toc_entry">Schur’s Lemma</span></a>
+ </li>
+<li class="">
+  <a href="sect0007.html"><span class="toc_ref">3.2</span> <span class="toc_entry">The Symmetrisation \(A \mapsto |G|^{-1}\sum _g \rho (g) A \rho (g)^{-1}\)</span></a>
+ </li>
+<li class="">
+  <a href="sect0008.html"><span class="toc_ref">3.3</span> <span class="toc_entry">Matrix-Coefficient Orthogonality (Schur II)</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class="">
+  <a href="chap-characters.html"><span class="toc_ref">4</span> <span class="toc_entry">Characters and Their Orthogonality</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0009.html"><span class="toc_ref">4.1</span> <span class="toc_entry">Characters</span></a>
+ </li>
+<li class="">
+  <a href="sect0010.html"><span class="toc_ref">4.2</span> <span class="toc_entry">The Averaging Formula and Character Orthonormality</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class="">
+  <a href="chap-isotypic.html"><span class="toc_ref">5</span> <span class="toc_entry">Isotypic Decomposition</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0011.html"><span class="toc_ref">5.1</span> <span class="toc_entry">The Indexing Set \(\hat G\)</span></a>
+ </li>
+<li class="">
+  <a href="sect0012.html"><span class="toc_ref">5.2</span> <span class="toc_entry">Isotypic Components</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class="">
+  <a href="chap-peter-weyl.html"><span class="toc_ref">6</span> <span class="toc_entry">The Peter–Weyl Theorem for Finite Groups</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0013.html"><span class="toc_ref">6.1</span> <span class="toc_entry">The Regular Representation</span></a>
+ </li>
+<li class="">
+  <a href="sect0014.html"><span class="toc_ref">6.2</span> <span class="toc_entry">Multiplicities in \(k[G]\)</span></a>
+ </li>
+<li class="">
+  <a href="sect0015.html"><span class="toc_ref">6.3</span> <span class="toc_entry">The Peter–Weyl Decomposition</span></a>
+ </li>
+<li class="">
+  <a href="sect0016.html"><span class="toc_ref">6.4</span> <span class="toc_entry">Two-Sided Wedderburn Form (optional)</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class="">
+  <a href="chap-character-consequences.html"><span class="toc_ref">7</span> <span class="toc_entry">Multiplicity Formula and Character Theory Consequences</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0017.html"><span class="toc_ref">7.1</span> <span class="toc_entry">Multiplicity from Characters</span></a>
+ </li>
+<li class="">
+  <a href="sect0018.html"><span class="toc_ref">7.2</span> <span class="toc_entry">Class Functions and Their Span</span></a>
+ </li>
+<li class="">
+  <a href="sect0019.html"><span class="toc_ref">7.3</span> <span class="toc_entry">Irreducible Characters Span \(\mathrm{Cl}(G)\)</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class="">
+  <a href="chap-status.html"><span class="toc_ref">8</span> <span class="toc_entry">Summary of Mathlib Status</span></a>
+ </li>
+</ul>
+</nav>
+
+<div class="content">
+<div class="content-wrapper">
+
+
+<div class="main-text">
+<h1 id="a0000000006">2.3 Maschke’s Theorem</h1>
+<div class="theorem_thmwrapper theorem-style-plain" id="thm:maschke-split">
+  <div class="theorem_thmheading">
+    <span class="theorem_thmcaption">
+    Theorem
+    </span>
+    <span class="theorem_thmlabel">17</span>
+    <span class="theorem_thmtitle">Maschke: every \({k[G]}\)-injection splits</span>
+  </div>
+  <div class="theorem_thmcontent">
+  <p>  MonoidAlgebra.exists_leftInverse_of_injective lem:bar-pi-equivariant, lem:bar-pi-retracts Let \(V, W\) be \(k[G]\)-modules and \(f : V \to W\) a \(k[G]\)-linear injection. Then \(f\) admits a \(k[G]\)-linear left inverse: there exists \(g : W \to V\) in \(k[G]\text{-Mod}\) with \(g \circ f = \mathrm{id}_V\). </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000026">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  <p>lem:bar-pi-equivariant, lem:bar-pi-retracts Choose any \(k\)-linear retraction \(\pi : W \to V\) of \(f\) (it exists because \(V \to W\) is an injection of \(k\)-vector spaces). Take \(g := \bar\pi \) from Definition&#160;<a href="sect0004.html#def:equivariant-projection">14</a>; it is \(k[G]\)-linear (Lemma&#160;<a href="sect0004.html#lem:bar-pi-equivariant">15</a>) and retracts \(f\) (Lemma&#160;<a href="sect0004.html#lem:bar-pi-retracts">16</a>). This is the proof of <span class="ttfamily">MonoidAlgebra.exists_leftInverse_of_injective</span>. </p>
+
+  </div>
+</div>
+<div class="theorem_thmwrapper theorem-style-plain" id="thm:maschke-compl">
+  <div class="theorem_thmheading">
+    <span class="theorem_thmcaption">
+    Theorem
+    </span>
+    <span class="theorem_thmlabel">18</span>
+    <span class="theorem_thmtitle">Maschke: every submodule has a complement</span>
+  </div>
+  <div class="theorem_thmcontent">
+  <p>  MonoidAlgebra.Submodule.exists_isCompl thm:maschke-split For any \(k[G]\)-module \(V\) and any \(k[G]\)-submodule \(p \subseteq V\) there is a \(k[G]\)-submodule \(q \subseteq V\) with \(V = p \oplus q\) (i.e. <span class="ttfamily">IsCompl p q</span>). </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000027">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  <p>thm:maschke-split Apply Theorem&#160;<a href="sect0005.html#thm:maschke-split">17</a> to the inclusion \(p \hookrightarrow V\) to obtain a \(k[G]\)-linear retraction \(g : V \to p\). Then \(q := \ker g\) is a \(k[G]\)-submodule with \(p \oplus q = V\). </p>
+
+  </div>
+</div>
+<div class="theorem_thmwrapper theorem-style-plain" id="thm:maschke-semisimple">
+  <div class="theorem_thmheading">
+    <span class="theorem_thmcaption">
+    Theorem
+    </span>
+    <span class="theorem_thmlabel">19</span>
+    <span class="theorem_thmtitle">Maschke: \(V\) is semisimple as a \({k[G]}\)-module</span>
+  </div>
+  <div class="theorem_thmcontent">
+  <p>  MonoidAlgebra.Submodule.instIsSemisimpleModule thm:maschke-compl For every \(k[G]\)-module \(V\) we have <span class="ttfamily">IsSemisimpleModule (MonoidAlgebra k G) V</span>: every submodule has a complement, equivalently, \(V\) is a direct sum of simple submodules. </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000028">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  <p>thm:maschke-compl This is the Mathlib instance <span class="ttfamily">MonoidAlgebra.Submodule.instIsSemisimpleModule</span>, which packages Theorem&#160;<a href="sect0005.html#thm:maschke-compl">18</a> into the typeclass <span class="ttfamily">IsSemisimpleModule</span>. </p>
+
+  </div>
+</div>
+<div class="corollary_thmwrapper theorem-style-plain" id="cor:fd-rep-decomposition">
+  <div class="corollary_thmheading">
+    <span class="corollary_thmcaption">
+    Corollary
+    </span>
+    <span class="corollary_thmlabel">20</span>
+    <span class="corollary_thmtitle">Every f.d. rep is a direct sum of irreducibles</span>
+  </div>
+  <div class="corollary_thmcontent">
+  <p>  IsSemisimpleModule.exists_directSum_simple thm:maschke-semisimple, def:simple Every \(V : \texttt{FDRep k G}\) is isomorphic to a finite direct sum of simple objects of <span class="ttfamily">FDRep k G</span>. </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000029">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  <p>thm:maschke-semisimple By Theorem&#160;<a href="sect0005.html#thm:maschke-semisimple">19</a>, <span class="ttfamily">V.ρ.asModule</span> is semisimple. A finitely generated semisimple module is a finite direct sum of simple modules; transporting along the equivalence <span class="ttfamily">Rep.equivalenceModuleMonoidAlgebra</span> gives the statement in <span class="ttfamily">FDRep k G</span>. </p>
+
+  </div>
+</div>
+
+</div> <!--main-text -->
+</div> <!-- content-wrapper -->
+</div> <!-- content -->
+</div> <!-- wrapper -->
+
+<nav class="prev_up_next">
+  <a href="sect0004.html" title="The Averaged (Equivariant) Projection"><svg  class="icon icon-arrow-left "><use xlink:href="symbol-defs.svg#icon-arrow-left"></use></svg>
+</a>
+  <a href="chap-maschke.html" title="Maschke’s Theorem and Semisimplicity"><svg  class="icon icon-arrow-up "><use xlink:href="symbol-defs.svg#icon-arrow-up"></use></svg>
+</a>
+  <a href="chap-schur.html" title="Schur’s Lemma and Matrix-Coefficient Orthogonality"><svg  class="icon icon-arrow-right "><use xlink:href="symbol-defs.svg#icon-arrow-right"></use></svg>
+</a>
+</nav>
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/plastex.js"></script>
+<script type="text/javascript" src="js/svgxuse.js"></script>
+</body>
+</html>
